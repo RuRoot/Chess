@@ -234,7 +234,7 @@ public class Play2 extends AppCompatActivity {
         if(board[fIdOfButton2].isFigure==1){
             System.out.println("тут есть фигура");
             imageView=findViewById(img[board[fIdOfButton2].getidF()]);
-            System.out.println("fIdOfButton2:"+fIdOfButton2);
+            // System.out.println("fIdOfButton2:"+fIdOfButton2);
             imageView.setVisibility(View.INVISIBLE);}
         if(board[fIdOfButton].nameF=="Король"){
             if(board[fIdOfButton].colorF==1){GeoOfBKing=fIdOfButton2;}
@@ -815,6 +815,7 @@ public class Play2 extends AppCompatActivity {
         rook(board);
     }
     public int isChahe(cell[] board,int Nfield,int Wfield,int color){//Nfield(now Field) текущее поле на котором стоит фигура Wfield(will field) поле куда хочит пойти игрок
+
         int key=0;
         int buferWfield=board[Wfield].isFigure;
         int buferWfieldColor=board[Wfield].colorF;
@@ -872,7 +873,7 @@ public class Play2 extends AppCompatActivity {
 
     }
     public ArrayList Pat(int moveFlag,ArrayList list){
-        keyR=0;
+        keyR=1;
         ChaheKey=1;
         ArrayList<Integer> Plist = new ArrayList<>();
         Plist.addAll(list);//cохранили массив возможных ходов в Plist
@@ -1036,7 +1037,8 @@ public class Play2 extends AppCompatActivity {
             textView.setText(" НЕ МАТ НЕ ШАХ");
             System.out.println("НЕ MAT НЕ ШАХ");
             //textView.setText( Pat(moveFlag,list).size());
-            System.out.println("/////////////////////////////////////////////////Пользователь может пойти"+Pat(moveFlag,list).size());}
+            //System.out.println("/////////////////////////////////////////////////Пользователь может пойти"+Pat(moveFlag,list).size());
+        }
 
 
 
