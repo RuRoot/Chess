@@ -226,11 +226,13 @@ public class Play2 extends AppCompatActivity {
     int ChaheKey=0;//ключ шах(1)/ход(0)   при 1 запускаеться фор
     int ChaheQ=0;//имитируем нажатие на кнопку для расчета возможных ходов и битых полей
     int keyR=1;//0- только Shah(для противника) 1- только isChahe(для себя,не открываем короля)
+    int moveCount=0;
     // int testing=0;//создана переменная для тестировки 0-заход через Pat 1-заход через фигуру 2-заход через Chahe
     String idOfImage;
     public int[] img = new int[]{R.id.imageView0,R.id.imageView1,R.id.imageView2,R.id.imageView3,R.id.imageView4,R.id.imageView5,R.id.imageView6,R.id.imageView7,R.id.imageView8,R.id.imageView9,R.id.imageView10,R.id.imageView11,R.id.imageView12,R.id.imageView13,R.id.imageView14,R.id.imageView15,R.id.imageView48,R.id.imageView49,R.id.imageView50,R.id.imageView51,R.id.imageView52,R.id.imageView53,R.id.imageView54,R.id.imageView55,R.id.imageView56,R.id.imageView57,R.id.imageView58,R.id.imageView59,R.id.imageView60,R.id.imageView61,R.id.imageView62,R.id.imageView63};//массив id
     ImageView imageView;
     public void change(cell[]board){
+
         list.clear();
         if(board[fIdOfButton2].isFigure==1){
             //System.out.println("тут есть фигура");
@@ -262,16 +264,17 @@ public class Play2 extends AppCompatActivity {
         int z=fIdOfButton;
         if(ChaheKey==1){z=ChaheQ;}
         if (board[z].colorF == 1) {//если пешка чёрная
-            if (board[z + 8].isFigure == 0  & (isChahe(board,z,z + 8,board[z].colorF)==0)) {
-                // System.out.println("z + 8 "+z + 8);
-                list.add(z + 8);//добаляем ход вперед на 1 клетку
-            }
-            if (board[z].getVertical() == 2){
-                if ( board[z + 8].isFigure == 0 & board[z + 16].isFigure == 0& (isChahe(board,z,z + 16,board[z].colorF)==0)) {
-                    // System.out.println("z + 16 "+z + 16);
-                    list.add(z + 16);//добаляем ход вперед на 2 клетки
+            if (keyR!=0){
+                if ((board[z + 8].isFigure == 0)  & (isChahe(board,z,z + 8,board[z].colorF)==0)) {
+                    // System.out.println("z + 8 "+z + 8);
+                    list.add(z + 8);//добаляем ход вперед на 1 клетку
                 }
-            }
+                if (board[z].getVertical() == 2){
+                    if ( (board[z + 8].isFigure == 0) & (board[z + 16].isFigure == 0) & (isChahe(board,z,z + 16,board[z].colorF)==0)) {
+                        // System.out.println("z + 16 "+z + 16);
+                        list.add(z + 16);//добаляем ход вперед на 2 клетки
+                    }
+                }}
             if ((z+9<=63)&(board[z + 9].getVertical() - board[z].getVertical() == 1)){//взятие
                 if (keyR==0){
                     // System. out.println("1-z + 9 "+z + 9);
@@ -292,14 +295,15 @@ public class Play2 extends AppCompatActivity {
 
 
         else {//если пешка белая
-            if (board[z - 8].isFigure == 0& (isChahe(board,z,z - 8,board[z].colorF)==0)) {
-                list.add(z - 8);//добаляем ход вперед на 1 клетку
-            }
-            if (board[z].getVertical() == 7){
-                if ( board[z - 8].isFigure == 0 & board[z - 16].isFigure == 0& (isChahe(board,z,z - 16,board[z].colorF)==0)) {
-                    list.add(z - 16);//добаляем ход вперед на 2 клетки
+            if (keyR!=0){
+                if ((board[z - 8].isFigure == 0) & (isChahe(board,z,z - 8,board[z].colorF)==0)) {
+                    list.add(z - 8);//добаляем ход вперед на 1 клетку
                 }
-            }
+                if (board[z].getVertical() == 7){
+                    if ( (board[z - 8].isFigure == 0) & (board[z - 16].isFigure == 0) & (isChahe(board,z,z - 16,board[z].colorF)==0)) {
+                        list.add(z - 16);//добаляем ход вперед на 2 клетки
+                    }
+                }}
             if ((z-9<=63)&(board[z - 9].getVertical() - board[z].getVertical() == 1)){//взятие
                 if (keyR==0){list.add(z - 9);}
                 else if((board[z - 9].isFigure == 1)& (isChahe(board,z,z - 9,board[z].colorF)==0)){
@@ -847,13 +851,14 @@ public class Play2 extends AppCompatActivity {
         rook(board);
     }
     public int isChahe(cell[] board,int Nfield,int Wfield,int color){//Nfield(now Field) текущее поле на котором стоит фигура Wfield(will field) поле куда хочит пойти игрок
-
+        System.out.println(board[Nfield].isFigure+" фф вход "+board[Nfield].nameF+Nfield+" "+Wfield+" color "+color+" moveFlag "+moveFlag+" buttonFlag "+buttonFlag+" idf "+board[Nfield].idF+" цвет "+board[Nfield].colorF+" произошло на ходе "+moveCount+" ChaheKey "+ChaheKey + " keyR "+keyR);
         ChaheKey=0;
         //keyR=0;
         int key=0;
         System.out.println("Контроль вход isChahe "+keyR);
         int buferWfield=board[Wfield].isFigure;
         int buferWfieldColor=board[Wfield].colorF;
+        int buferNfield=board[Nfield].isFigure;
         if( board[Nfield].nameF=="Король"){
             board[Nfield].nameF="";
             if (color == 1){
@@ -873,7 +878,7 @@ public class Play2 extends AppCompatActivity {
         else{ Geo=GeoOfBKing;}
 
         if(Shah().indexOf(Geo)==-1){
-            board[Nfield].isFigure=1;
+            board[Nfield].isFigure=buferNfield;
             board[Wfield].isFigure=buferWfield;
             board[Wfield].colorF=buferWfieldColor;
             if (key==1){
@@ -889,13 +894,14 @@ public class Play2 extends AppCompatActivity {
             keyR=1;
             ChaheQ=0;
             System.out.println("Контроль выход isChahe "+keyR);
+            System.out.println(board[Nfield].isFigure+" фф выход");
             return 0;//шаха нет
         }
 
 
 
         else{
-            board[Nfield].isFigure=1;
+            board[Nfield].isFigure=buferNfield;
             board[Wfield].isFigure=buferWfield;
             board[Wfield].colorF=buferWfieldColor;
             if (key==1){
@@ -910,6 +916,10 @@ public class Play2 extends AppCompatActivity {
             ChaheQ=0;
 
             System.out.println("Контроль выход isChahe "+keyR);
+            for(int i=0;i<=63;i++){
+                System.out.println("Выход в isChahe "+i +" id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF+" номер клетки "+" сейчас ход "+moveFlag );
+            }
+            System.out.println(board[Nfield].isFigure+" фф выход");
             return 1;//шах есть
         }
 
@@ -917,7 +927,7 @@ public class Play2 extends AppCompatActivity {
     }
     public ArrayList Pat(){
         // System.out.println("PAT In");
-
+        System.out.println("ход номер "+moveCount+" ?вход Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
         //keyR=1;
         ChaheQ=0;
         ChaheKey=1;
@@ -931,7 +941,7 @@ public class Play2 extends AppCompatActivity {
             int SaveChaheQ=0;
             //System.out.println("ChaheQ "+ChaheQ);
             // System.out.println("PAT ChaheQ "+ ChaheQ);
-            if(board[ ChaheQ].colorF==moveFlag){
+            if(board[ChaheQ].colorF==moveFlag & board[ChaheQ].isFigure==1){
                 keyR=1;
                 switch (board[ ChaheQ].nameF){
                     case "Пешка": //System.out.println("---------------------------------------Пешка проверка---------------------------------");
@@ -1029,6 +1039,7 @@ public class Play2 extends AppCompatActivity {
         keyR=1;
         ChaheQ=0;
         System.out.println("Контроль выход Pat "+keyR);
+        System.out.println("ход номер "+moveCount+" ?выход Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
         return bufer;
 
     }
@@ -1043,7 +1054,7 @@ public class Play2 extends AppCompatActivity {
         list.clear();//очистили массив возможных ходов
         ArrayList<Integer> bufer= new ArrayList<>();
         for(ChaheQ=0;ChaheQ<=63;ChaheQ++){
-            if(board[ChaheQ].colorF!=moveFlag){
+            if(board[ChaheQ].colorF!=moveFlag & board[ChaheQ].isFigure==1){
                 if(board[ChaheQ].nameF=="Пешка"){
                     // System.out.println("---------------------------------------Пешка проверка---------------------------------");
                     //pawn(board);
@@ -1070,8 +1081,9 @@ public class Play2 extends AppCompatActivity {
                             }}
 
                     }
+                    //pawn(board);
 
-
+                    System.out.println("ход "+moveCount+"массив полсе пешки на клетке "+ChaheQ+list);
 
 
                    /* if(list.indexOf(ChaheQ+8)!=-1){list.remove(list.indexOf(ChaheQ+8));}
@@ -1083,27 +1095,27 @@ public class Play2 extends AppCompatActivity {
                 else if(board[ChaheQ].nameF=="Слон"){
                     //System.out.println("---------------------------------------СЛОН проверка---------------------------------");
                     bishop(board);
-                    //  System.out.println("массив полсе слона"+list);
+                    System.out.println("ход "+moveCount+"массив полсе слона"+list);
                 }
                 else if(board[ChaheQ].nameF=="Ферзь"){
                     //System.out.println("---------------------------------------Ферзь проверка---------------------------------");
                     queen(board);
-                    // System.out.println("массив полсе ферзя"+list);
+                    System.out.println("ход "+moveCount+"массив полсе ферзя"+list);
                 }
                 else if(board[ChaheQ].nameF=="Король"){
                     //System.out.println("---------------------------------------Король проверка---------------------------------");
                     king(board);
-                    // System.out.println("массив полсе короля"+list);
+                    System.out.println("ход "+moveCount+"массив полсе короля"+list);
                 }
                 else if(board[ChaheQ].nameF=="Конь"){
                     //System.out.println("---------------------------------------Конь проверка---------------------------------");
                     knight(board);
-                    //System.out.println("массив полсе коня"+list);
+                    System.out.println("ход "+moveCount+"массив полсе коня"+list);
                 }
                 else if(board[ChaheQ].nameF=="Ладья"){
                     //System.out.println("---------------------------------------Ладья проверка---------------------------------");
                     rook(board);
-                    //System.out.println("массив полсе ладьи"+list);
+                    System.out.println("ход "+moveCount+"массив полсе ладьи"+list);
                 }
             }
         }
@@ -1122,57 +1134,73 @@ public class Play2 extends AppCompatActivity {
         return valueInPx;
     }
     public void test(View v){
-
+        idOfButton2=v.getResources().getResourceName(v.getId());
+        fIdOfButton2=Integer.parseInt(idOfButton2.substring(32));
         this.board=board;
         int K=0;
         if (moveFlag==0){K=GeoOfWKing;}
         else{K=GeoOfBKing;}
         System.out.println("ДО,ПРоверка isChahe");
+        System.out.println("ход номер "+moveCount+" №0 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
         for(int i=0;i<=63;i++) {
-            System.out.println("id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF+" номер клетки "+i);
+            System.out.println(i +" id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF+" номер клетки "+" сейчас ход "+moveFlag );
         }
-        System.out.println("BEFORE< "+list+" / "+ChaheQ+" / "+ChaheKey+" / "+keyR+" / "+moveFlag+" / "+buttonFlag+" / "+GeoOfBKing+" / "+GeoOfWKing+" / "+fIdOfButton+" / "+fIdOfButton2);
-        if(Shah().indexOf(K)!=-1){
+        //if(Shah().indexOf(K)==-1){System.out.println("ход номер "+moveCount+" №-1 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);}
+        if(Shah().indexOf(K)!=-1) {
+            System.out.println("< if ");
 
-            if (Pat().size()==0){
-                textView=findViewById(R.id.textView);
+            // System.out.println("ход номер "+moveCount+" №1 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
+            if (Pat().size() == 0) {
+                textView = findViewById(R.id.textView);
                 textView.setText("МАТ");
                 System.out.println("MAT");
+                // System.out.println("$$1 ход "+moveCount);
+                //System.out.println("ход номер "+moveCount+" №2 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
 
             }
+            // if (Pat().size()!=0){System.out.println("ход номер "+moveCount+" №-2 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);}
 
-            else{textView=findViewById(R.id.textView);
-                textView=findViewById(R.id.textView);
+
+            else {
+                textView = findViewById(R.id.textView);
+                textView = findViewById(R.id.textView);
 
                 textView.setText("ШАХ");
-                System.out.println("ШАХ");}
+                System.out.println("ШАХ");
+                // System.out.println("$$2 ход "+moveCount);}
+            }
         }
-
         else if (Pat().size()==0){
+            System.out.println("< else if ");
+            System.out.println("ПАТ");
             textView=findViewById(R.id.textView);
             textView.setText("ПАТ");
             System.out.println("ПАТ");
+            //System.out.println("$$3 ход "+moveCount);
+            // System.out.println("ход номер "+moveCount+" №3 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
 
         }
         else {
+            System.out.println("< else ");
+            //System.out.println("ход номер "+moveCount+" №4 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
             System.out.println("##########################################################1");
             textView = findViewById(R.id.textView);
-            textView.setText(" НЕ МАТ НЕ ШАХ");
+            textView.setText(" НЕ МАТ НЕ ШАХ НЕ ПАТ");
             System.out.println("НЕ MAT НЕ ШАХ" );
             System.out.println( "buf "+Pat());
             System.out.println( "list "+list);
             System.out.println( "ChaheQ "+ChaheQ);
             System.out.println("##########################################################2");
+            //System.out.println("$$4 ход "+moveCount);
             //textView.setText( Pat(moveFlag,list).size());
             //System.out.println("/////////////////////////////////////////////////Пользователь может пойти"+Pat(moveFlag,list).size());}
         }
-        System.out.println("ПОСЛЕ,ПРоверка isChahe");
+       /* System.out.println("ПОСЛЕ,ПРоверка isChahe");
         for(int i=0;i<=63;i++) {
             System.out.println("id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF+" номер клетки "+i);
-        }
-        idOfButton2=v.getResources().getResourceName(v.getId());
-        fIdOfButton2=Integer.parseInt(idOfButton2.substring(32));
-        System.out.println("AFTER< "+list+" / "+ChaheQ+" / "+ChaheKey+" / "+keyR+" / "+moveFlag+" / "+buttonFlag+" / "+GeoOfBKing+" / "+GeoOfWKing+" / "+fIdOfButton+" / "+fIdOfButton2);
+        }*/
+
+        //System.out.println("AFTER< "+list+" / "+ChaheQ+" / "+ChaheKey+" / "+keyR+" / "+moveFlag+" / "+buttonFlag+" / "+GeoOfBKing+" / "+GeoOfWKing+" / "+fIdOfButton+" / "+fIdOfButton2);
 
         if(buttonFlag==0){//фигура не выбрана,ход не сделан
             idOfButton=v.getResources().getResourceName(v.getId());//получаем айди кнопки
@@ -1185,6 +1213,7 @@ public class Play2 extends AppCompatActivity {
 
             if(board[fIdOfButton].isFigure==1 & board[fIdOfButton].colorF==moveFlag){//если есть фигура на этом поле и ход этого игрока,то:
                 if(board[fIdOfButton].nameF=="Пешка"){//если эта фигура пешка
+
                     textView=findViewById(R.id.textView);
                     pawn(board);
                     textView=findViewById(R.id.textView);
@@ -1229,6 +1258,7 @@ public class Play2 extends AppCompatActivity {
 
 
             }
+            // System.out.println("ход номер "+moveCount+" №5 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
 
 
         }
@@ -1272,6 +1302,7 @@ public class Play2 extends AppCompatActivity {
             change(board);
             buttonFlag = 0;
             moveFlag = Math.abs(moveFlag - 1);
+            moveCount++;
             //imageView.setY(imageView.getY()); //+ ((board[fIdOfButton2].getVertical() - board[fIdOfButton].getVertical())) * valueInPx);
             //imageView.setX(imageView.getX()); //+ ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * valueInPx);
             //textView=findViewById(R.id.textView);
