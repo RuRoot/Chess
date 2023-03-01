@@ -224,7 +224,7 @@ public class Play2 extends AppCompatActivity {
     int GeoOfBKing=4;//позиция черногго короля
     int GeoOfWKing=60;//позиция белого короля
     int ChaheKey=0;//ключ шах(1)/ход(0)
-    int ChaheQ=0;
+    int ChaheQ=0;//имитируем нажатие на кнопку для расчета возможных ходов и битых полей
     int keyR=1;//0- только Shah(для противника) 1- только isChahe(для себя,не открываем короля)
 
     String idOfImage;
@@ -234,7 +234,7 @@ public class Play2 extends AppCompatActivity {
         if(board[fIdOfButton2].isFigure==1){
             System.out.println("тут есть фигура");
             imageView=findViewById(img[board[fIdOfButton2].getidF()]);
-            // System.out.println("fIdOfButton2:"+fIdOfButton2);
+            System.out.println("fIdOfButton2:"+fIdOfButton2);
             imageView.setVisibility(View.INVISIBLE);}
         if(board[fIdOfButton].nameF=="Король"){
             if(board[fIdOfButton].colorF==1){GeoOfBKing=fIdOfButton2;}
@@ -815,8 +815,8 @@ public class Play2 extends AppCompatActivity {
         rook(board);
     }
     public int isChahe(cell[] board,int Nfield,int Wfield,int color){//Nfield(now Field) текущее поле на котором стоит фигура Wfield(will field) поле куда хочит пойти игрок
-
         int key=0;
+
         int buferWfield=board[Wfield].isFigure;
         int buferWfieldColor=board[Wfield].colorF;
         if( board[Nfield].nameF=="Король"){
@@ -872,52 +872,82 @@ public class Play2 extends AppCompatActivity {
 
 
     }
-    public ArrayList Pat(int moveFlag,ArrayList list){
+    public ArrayList Pat(){
+        System.out.println("PAT In");
         keyR=1;
+        ChaheQ=0;
         ChaheKey=1;
         ArrayList<Integer> Plist = new ArrayList<>();
         Plist.addAll(list);//cохранили массив возможных ходов в Plist
         list.clear();//очистили массив возможных ходов
         ArrayList<Integer> bufer= new ArrayList<>();
-        for(ChaheQ=0;ChaheQ<=63;ChaheQ++){
-            if(board[ChaheQ].colorF==moveFlag){
-                if(board[ChaheQ].nameF=="Пешка") {
+        for( ChaheQ=0; ChaheQ<=63; ChaheQ++){
+            System.out.println("PAT ChaheQ "+ ChaheQ);
+            if(board[ ChaheQ].colorF==moveFlag){
+                switch (board[ ChaheQ].nameF){
+                    case "Пешка": System.out.println("---------------------------------------Пешка проверка---------------------------------");
+                        pawn(board);
+                        System.out.println("PAT массив полсе пешки"+list);
+                        break;
+                    case "Cлон":   System.out.println("---------------------------------------СЛОН проверка---------------------------------");
+                        bishop(board);
+                        System.out.println("PAT массив полсе слона"+list);
+                        break;
+                    case "Ферзь": System.out.println("---------------------------------------Ферзь проверка---------------------------------");
+                        queen(board);
+                        System.out.println("PAT массив полсе ферзя"+list);
+                        break;
+                    case "Король":  System.out.println("---------------------------------------Король проверка---------------------------------");
+                        king(board);
+                        System.out.println("PAT массив полсе короля"+list);
+                        break;
+                    case "Конь":   System.out.println("---------------------------------------Конь проверка---------------------------------");
+                        knight(board);
+                        System.out.println("PAT массив полсе коня"+list);
+                        break;
+                    case "Ладья":  System.out.println("---------------------------------------Ладья проверка---------------------------------");
+                        rook(board);
+                        System.out.println("PAT массив полсе ладьи"+list);
+                        break;
+
+                }
+               /* if(board[ChaheQ].nameF=="Пешка") {
                     System.out.println("---------------------------------------Пешка проверка---------------------------------");
                     pawn(board);
-                    System.out.println("массив полсе пешки"+list);
+                    System.out.println("PAT массив полсе пешки"+list);
                 }
                 else if(board[ChaheQ].nameF=="Слон"){
                     System.out.println("---------------------------------------СЛОН проверка---------------------------------");
                     bishop(board);
-                    System.out.println("массив полсе слона"+list);
+                    System.out.println("PAT массив полсе слона"+list);
                 }
                 else if(board[ChaheQ].nameF=="Ферзь"){
                     System.out.println("---------------------------------------Ферзь проверка---------------------------------");
                     queen(board);
-                    System.out.println("массив полсе ферзя"+list);
+                    System.out.println("PAT массив полсе ферзя"+list);
                 }
                 else if(board[ChaheQ].nameF=="Король"){
                     System.out.println("---------------------------------------Король проверка---------------------------------");
                     king(board);
-                    System.out.println("массив полсе короля"+list);
+                    System.out.println("PAT массив полсе короля"+list);
                 }
                 else if(board[ChaheQ].nameF=="Конь"){
                     System.out.println("---------------------------------------Конь проверка---------------------------------");
                     knight(board);
-                    System.out.println("массив полсе коня"+list);
+                    System.out.println("PAT массив полсе коня"+list);
                 }
                 else if(board[ChaheQ].nameF=="Ладья"){
                     System.out.println("---------------------------------------Ладья проверка---------------------------------");
                     rook(board);
-                    System.out.println("массив полсе ладьи"+list);
-                }
+                    System.out.println("PAT массив полсе ладьи"+list);
+                }*/
             }}
-
+        System.out.println("IN pat "+list);
         bufer.addAll(list);
         list.clear();
         list.addAll(Plist);
         ChaheKey=0;
-
+        System.out.println("PAT out");
         return bufer;
 
     }
@@ -1014,7 +1044,7 @@ public class Play2 extends AppCompatActivity {
         else{K=GeoOfBKing;}
         if(Shah(moveFlag,list).indexOf(K)!=-1){
 
-            if (Pat(moveFlag,list).size()==0){
+           /* if (Pat(moveFlag,list).size()==0){
                 textView=findViewById(R.id.textView);
                 textView.setText("МАТ");
                 System.out.println("MAT");
@@ -1025,21 +1055,24 @@ public class Play2 extends AppCompatActivity {
                 textView=findViewById(R.id.textView);
 
                 textView.setText("ШАХ");
-                System.out.println("ШАХ");}
+                System.out.println("ШАХ");}*/
         }
-        else if (Pat(moveFlag,list).size()==0){
+        else if (Pat().size()==0){
             textView=findViewById(R.id.textView);
             textView.setText("ПАТ");
             System.out.println("ПАТ");
 
         }
-        else{textView=findViewById(R.id.textView);
+        else {
+            System.out.println("##########################################################1");
+            textView = findViewById(R.id.textView);
             textView.setText(" НЕ МАТ НЕ ШАХ");
-            System.out.println("НЕ MAT НЕ ШАХ");
+            System.out.println("НЕ MAT НЕ ШАХ" );
+            System.out.println( "buf "+Pat());
+            System.out.println("##########################################################2");
             //textView.setText( Pat(moveFlag,list).size());
-            //System.out.println("/////////////////////////////////////////////////Пользователь может пойти"+Pat(moveFlag,list).size());
+            //System.out.println("/////////////////////////////////////////////////Пользователь может пойти"+Pat(moveFlag,list).size());}
         }
-
 
 
         idOfButton2=v.getResources().getResourceName(v.getId());
