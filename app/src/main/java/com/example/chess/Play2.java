@@ -259,7 +259,8 @@ public class Play2 extends AppCompatActivity {
     public  void pawn(cell[]board) {
 
         int z=fIdOfButton;
-        if(ChaheKey==1){z=ChaheQ;}
+        if(ChaheKey==1){z=ChaheQ;
+            System.out.println("Зашел в пешку проверка для PAT");}
         if (board[z].colorF == 1) {//если пешка чёрная
             if (board[z + 8].isFigure == 0  & (isChahe(board,z,z + 8,board[z].colorF)==0)) {
 
@@ -530,7 +531,9 @@ public class Play2 extends AppCompatActivity {
                 i=i-1;}
             else{
                 break;}
+
         }
+        System.out.println("Ладья возможные ходы "+ list);
     }
 
     public  void knight(cell[]board) {//Конь
@@ -875,39 +878,59 @@ public class Play2 extends AppCompatActivity {
     public ArrayList Pat(){
         System.out.println("PAT In");
         keyR=1;
-        ChaheQ=0;
+
+        // ChaheQ=0;
+        // System.out.println("  ChaheQ=0;");
         ChaheKey=1;
+
         ArrayList<Integer> Plist = new ArrayList<>();
+
         Plist.addAll(list);//cохранили массив возможных ходов в Plist
+
         list.clear();//очистили массив возможных ходов
+
         ArrayList<Integer> bufer= new ArrayList<>();
-        for( ChaheQ=0; ChaheQ<=63; ChaheQ++){
-            System.out.println("PAT ChaheQ "+ ChaheQ);
-            if(board[ ChaheQ].colorF==moveFlag){
-                switch (board[ ChaheQ].nameF){
+
+        for( int i=0; i<=63;i++){
+            System.out.println("PAT ChaheQ "+ i);
+            if(board[i].colorF==moveFlag){
+                switch (board[ i].nameF){
                     case "Пешка": System.out.println("---------------------------------------Пешка проверка---------------------------------");
+                        ChaheQ=i;
                         pawn(board);
-                        System.out.println("PAT массив полсе пешки"+list);
+
+                        ChaheKey=1;
+
                         break;
                     case "Cлон":   System.out.println("---------------------------------------СЛОН проверка---------------------------------");
+                        ChaheQ=i;
                         bishop(board);
-                        System.out.println("PAT массив полсе слона"+list);
+
+                        ChaheKey=1;
                         break;
                     case "Ферзь": System.out.println("---------------------------------------Ферзь проверка---------------------------------");
+                        ChaheQ=i;
                         queen(board);
-                        System.out.println("PAT массив полсе ферзя"+list);
+
+                        ChaheKey=1;
                         break;
                     case "Король":  System.out.println("---------------------------------------Король проверка---------------------------------");
+                        ChaheQ=i;
                         king(board);
-                        System.out.println("PAT массив полсе короля"+list);
+
+                        ChaheKey=1;
                         break;
                     case "Конь":   System.out.println("---------------------------------------Конь проверка---------------------------------");
+                        ChaheQ=i;
                         knight(board);
-                        System.out.println("PAT массив полсе коня"+list);
+
+                        ChaheKey=1;
                         break;
                     case "Ладья":  System.out.println("---------------------------------------Ладья проверка---------------------------------");
+                        ChaheQ=i;
                         rook(board);
-                        System.out.println("PAT массив полсе ладьи"+list);
+
+                        ChaheKey=1;
                         break;
 
                 }
@@ -953,6 +976,7 @@ public class Play2 extends AppCompatActivity {
     }
 
     public ArrayList Shah(int moveFlag,ArrayList list){//массив битых полей расчитан для полей которые бьет противник
+
         keyR=0;
         ChaheKey=1;
         ArrayList<Integer> Clist = new ArrayList<>();
@@ -1000,30 +1024,31 @@ public class Play2 extends AppCompatActivity {
                 else if(board[ChaheQ].nameF=="Слон"){
                     //System.out.println("---------------------------------------СЛОН проверка---------------------------------");
                     bishop(board);
-                    System.out.println("массив полсе слона"+list);
+                    //System.out.println("массив полсе слона"+list);
                 }
                 else if(board[ChaheQ].nameF=="Ферзь"){
                     //System.out.println("---------------------------------------Ферзь проверка---------------------------------");
                     queen(board);
-                    System.out.println("массив полсе ферзя"+list);
+                    //System.out.println("массив полсе ферзя"+list);
                 }
                 else if(board[ChaheQ].nameF=="Король"){
                     //System.out.println("---------------------------------------Король проверка---------------------------------");
                     king(board);
-                    System.out.println("массив полсе короля"+list);
+                    //System.out.println("массив полсе короля"+list);
                 }
                 else if(board[ChaheQ].nameF=="Конь"){
                     //System.out.println("---------------------------------------Конь проверка---------------------------------");
                     knight(board);
-                    System.out.println("массив полсе коня"+list);
+                    //System.out.println("массив полсе коня"+list);
                 }
                 else if(board[ChaheQ].nameF=="Ладья"){
                     //System.out.println("---------------------------------------Ладья проверка---------------------------------");
                     rook(board);
-                    System.out.println("массив полсе ладьи"+list);
+                    //System.out.println("массив полсе ладьи"+list);
                 }
             }
         }
+
         bufer.addAll(list);
         list.clear();
         list.addAll(Clist);
