@@ -250,8 +250,24 @@ public class Play2 extends AppCompatActivity {
         imageView.setY(imageView.getY() + ((board[fIdOfButton2].getVertical() - board[fIdOfButton].getVertical())) * px);
 
         imageView.setX(imageView.getX() + ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * px);
+
+        if(board[fIdOfButton].nameF=="Пешка" & ((fIdOfButton2-8==geoPawn& moveFlag==0)|| (fIdOfButton2+8==geoPawn& moveFlag==0 ))){graphicEnPassant();}
     }
     public void graphicPromotion(){
+
+    }
+    public void graphicEnPassant(){
+        imageView=findViewById(img[board[geoPawn].getidF()]);
+
+        imageView.setVisibility(View.INVISIBLE);
+        board[geoPawn].idF=100;
+
+        board[geoPawn].isFigure=0;
+
+        board[geoPawn].nameF="";
+
+        board[geoPawn].colorF=0;
+
 
     }
     public void change(cell[]board){
@@ -275,7 +291,7 @@ public class Play2 extends AppCompatActivity {
         else if(fIdOfButton==56){wasMooveRook56=1;}
         else if(fIdOfButton==63){wasMooveRook63=1;}
         if (board[fIdOfButton].nameF=="Пешка" & Math.abs(fIdOfButton2-fIdOfButton)==16){
-            geoPawn=fIdOfButton;
+            geoPawn=fIdOfButton2;
         }
         else{ geoPawn=-1;}
 
@@ -465,8 +481,9 @@ public class Play2 extends AppCompatActivity {
                     list.add(z + 7);
                 }}
             if (geoPawn!=-1 & keyR==1){
-                if(Math.abs(z-geoPawn)==1 & isChahe(board,z,geoPawn+8,board[z].colorF)==0){
+                if(Math.abs(z-geoPawn)==1 & isChahe(board,z,geoPawn+8,board[z].colorF)==0 & board[geoPawn].getVertical()==board[z].getVertical()){
                     list.add(geoPawn+8);
+                    System.out.println("Добавил взятие на проходе");
 
                 }
             }
@@ -494,8 +511,9 @@ public class Play2 extends AppCompatActivity {
                     list.add(z - 7);
                 }}
             if (geoPawn!=-1 & keyR==1){
-                if(Math.abs(z-geoPawn)==1 & isChahe(board,z,geoPawn-8,board[z].colorF)==0){
+                if(Math.abs(z-geoPawn)==1 & isChahe(board,z,geoPawn-8,board[z].colorF)==0 & board[geoPawn].getVertical()==board[z].getVertical()){
                     list.add(geoPawn-8);
+                    System.out.println("Добавил взятие на проходе");
 
                 }
             }
@@ -1456,6 +1474,7 @@ public class Play2 extends AppCompatActivity {
             }
             else {
                 change(board);}
+
             buttonFlag = 0;
             moveFlag = Math.abs(moveFlag - 1);
             moveCount++;
