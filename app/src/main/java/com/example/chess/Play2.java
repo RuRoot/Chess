@@ -219,7 +219,7 @@ public class Play2 extends AppCompatActivity {
     int wasMooveRook7 =0;//для рокировки ходила ли черная ладья на 7
     int wasMooveRook56 =0;//для рокировки ходила ли белая ладья на 56
     int wasMooveRook63=0;//для рокировки ходила ли белая ладья на 63
-
+    int geoPawn=-1;
     String idOfButton;//айди кнопки
     int fIdOfButton=0;//финальная цифра id для использования для поиска по массиву
     String idOfButton2;//айди кнопки (2)
@@ -274,7 +274,10 @@ public class Play2 extends AppCompatActivity {
         else  if(fIdOfButton==7){wasMooveRook7=1;}
         else if(fIdOfButton==56){wasMooveRook56=1;}
         else if(fIdOfButton==63){wasMooveRook63=1;}
-
+        if (board[fIdOfButton].nameF=="Пешка" & Math.abs(fIdOfButton2-fIdOfButton)==16){
+            geoPawn=fIdOfButton;
+        }
+        else{ geoPawn=-1;}
 
         board[fIdOfButton2].idF=board[fIdOfButton].idF;//в связи с переходом меняем id фигуры на клетке
         board[fIdOfButton].idF=100;
@@ -461,6 +464,12 @@ public class Play2 extends AppCompatActivity {
                     // System.out.println("2-z + 7 "+z + 7);
                     list.add(z + 7);
                 }}
+            if (geoPawn!=-1 & keyR==1){
+                if(Math.abs(z-geoPawn)==1 & isChahe(board,z,geoPawn+8,board[z].colorF)==0){
+                    list.add(geoPawn+8);
+
+                }
+            }
         }
 
 
@@ -484,7 +493,14 @@ public class Play2 extends AppCompatActivity {
                 else if((board[z - 7].isFigure == 1)&(board[z - 7].colorF==1)& (isChahe(board,z,z - 7,board[z].colorF)==0)){
                     list.add(z - 7);
                 }}
+            if (geoPawn!=-1 & keyR==1){
+                if(Math.abs(z-geoPawn)==1 & isChahe(board,z,geoPawn-8,board[z].colorF)==0){
+                    list.add(geoPawn-8);
+
+                }
+            }
         }
+
 
 
     }
