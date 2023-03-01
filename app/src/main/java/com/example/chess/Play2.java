@@ -279,7 +279,7 @@ public class Play2 extends AppCompatActivity {
                 if (keyR==0){
                     // System. out.println("1-z + 9 "+z + 9);
                     list.add(z + 9);}
-                else if((board[z + 9].isFigure == 1)& (isChahe(board,z,z + 9,board[z].colorF)==0)){
+                else if((board[z + 9].isFigure == 1)&(board[z + 9].colorF==0) &(isChahe(board,z,z + 9,board[z].colorF)==0)){
                     // System.out.println("2-z + 9 "+z + 9);
                     list.add(z + 9);
                 }}
@@ -287,7 +287,7 @@ public class Play2 extends AppCompatActivity {
                 if (keyR==0){
                     //System.out.println("1-z + 7 "+z + 7);
                     list.add(z + 7);}
-                else if((board[z + 7].isFigure == 1)& (isChahe(board,z,z + 7,board[z].colorF)==0)){
+                else if((board[z + 7].isFigure == 1)&(board[z + 7].colorF==0)& (isChahe(board,z,z + 7,board[z].colorF)==0)){
                     // System.out.println("2-z + 7 "+z + 7);
                     list.add(z + 7);
                 }}
@@ -306,12 +306,12 @@ public class Play2 extends AppCompatActivity {
                 }}
             if ((z-9<=63)&(board[z - 9].getVertical() - board[z].getVertical() == 1)){//взятие
                 if (keyR==0){list.add(z - 9);}
-                else if((board[z - 9].isFigure == 1)& (isChahe(board,z,z - 9,board[z].colorF)==0)){
+                else if((board[z - 9].isFigure == 1)&(board[z - 9].colorF==1)& (isChahe(board,z,z - 9,board[z].colorF)==0)){
                     list.add(z - 9);
                 }}
             if ((z-7<=63)&(board[z - 7].getVertical() - board[z].getVertical() == 1)){//взятие
                 if (keyR==0){list.add(z - 7);}
-                else if((board[z - 7].isFigure == 1)& (isChahe(board,z,z - 7,board[z].colorF)==0)){
+                else if((board[z - 7].isFigure == 1)&(board[z - 7].colorF==1)& (isChahe(board,z,z - 7,board[z].colorF)==0)){
                     list.add(z - 7);
                 }}
         }
@@ -446,7 +446,7 @@ public class Play2 extends AppCompatActivity {
         while(j!=8){
             //System.out.println("Л  j*8+i-1"+(j*8+i-1)+" KeyR "+keyR);
             // System.out.println("Ладья i:"+i+" j:"+j+" j*8+i-1:"+(j*8+i-1));
-            System.out.println("List после "+j+" цикла "+list);
+            //System.out.println("List после "+j+" цикла "+list);
             if((j*8+i-1)>-1 & (j*8+i-1)<64) {
 
                 if (board[j * 8 + i - 1].isFigure == 1 & board[j * 8 + i - 1].colorF != board[z].colorF) {
@@ -457,10 +457,10 @@ public class Play2 extends AppCompatActivity {
                     else if(isChahe(board,z,j*8+i-1,board[z].colorF)==0){
 
                         list.add(j*8+i-1);}
-                    System.out.println("цикл закончен из за того что на этой клетке стоит не дружественная фигура , текущая клетка "+(j*8+i-1)+"на клетке стоит "+board[j*8+i-1].nameF+" цвет фигуры "+board[j*8+i-1].colorF);
+                    // System.out.println("цикл закончен из за того что на этой клетке стоит не дружественная фигура , текущая клетка "+(j*8+i-1)+"на клетке стоит "+board[j*8+i-1].nameF+" цвет фигуры "+board[j*8+i-1].colorF);
                     break;}
                 else if (board[j * 8 + i - 1].isFigure == 1 & board[j * 8 + i - 1].colorF == board[z].colorF) {
-                    System.out.println("цикл закончен из за того что на этой клетке стоит  дружественная фигура , текущая клетка "+(j*8+i-1)+"на клетке стоит "+board[j*8+i-1].nameF+" цвет фигуры "+board[j*8+i-1].colorF);
+                    // System.out.println("цикл закончен из за того что на этой клетке стоит  дружественная фигура , текущая клетка "+(j*8+i-1)+"на клетке стоит "+board[j*8+i-1].nameF+" цвет фигуры "+board[j*8+i-1].colorF);
                     //System.out.println("тут своя фигура дальше не иду "+"Сообщение выведено для ладьи на клетке "+z+"Не могу пойти на "+"j * 8 + i - 1"+"потому что там стоит фигура цвета"+board[j * 8 + i - 1].colorF+"А мой цвет "+board[z].colorF);
                     break;}
                 else {
@@ -478,7 +478,7 @@ public class Play2 extends AppCompatActivity {
 
             else{
 
-                System.out.println("цикл закончен из за конца перебора , текущая клетка "+(j*8+i-1));
+                //System.out.println("цикл закончен из за конца перебора , текущая клетка "+(j*8+i-1));
                 break;
             }
 
@@ -566,7 +566,7 @@ public class Play2 extends AppCompatActivity {
             else{
                 break;}
         }
-        System.out.println("Эта "+board[z].nameF+" находится на z="+z+" ChaheQ "+ChaheQ+" ChaheKey "+ChaheKey+ " KeyR "+keyR+" цвет этой ладьи "+board[z].colorF);
+        // System.out.println("Эта "+board[z].nameF+" находится на z="+z+" ChaheQ "+ChaheQ+" ChaheKey "+ChaheKey+ " KeyR "+keyR+" цвет этой ладьи "+board[z].colorF);
     }
 
     public  void knight(cell[]board) {//Конь
@@ -851,11 +851,11 @@ public class Play2 extends AppCompatActivity {
         rook(board);
     }
     public int isChahe(cell[] board,int Nfield,int Wfield,int color){//Nfield(now Field) текущее поле на котором стоит фигура Wfield(will field) поле куда хочит пойти игрок
-        System.out.println(board[Nfield].isFigure+" фф вход "+board[Nfield].nameF+Nfield+" "+Wfield+" color "+color+" moveFlag "+moveFlag+" buttonFlag "+buttonFlag+" idf "+board[Nfield].idF+" цвет "+board[Nfield].colorF+" произошло на ходе "+moveCount+" ChaheKey "+ChaheKey + " keyR "+keyR);
+        System.out.println(" Контроль вход isChahe ход "+moveCount);
         ChaheKey=0;
         //keyR=0;
         int key=0;
-        System.out.println("Контроль вход isChahe "+keyR);
+        // System.out.println("Контроль вход isChahe "+keyR);
         int buferWfield=board[Wfield].isFigure;
         int buferWfieldColor=board[Wfield].colorF;
         int buferNfield=board[Nfield].isFigure;
@@ -893,8 +893,7 @@ public class Play2 extends AppCompatActivity {
             ChaheKey=0;
             keyR=1;
             ChaheQ=0;
-            System.out.println("Контроль выход isChahe "+keyR);
-            System.out.println(board[Nfield].isFigure+" фф выход");
+            System.out.println(" Контроль выход isChahe ход "+moveCount);
             return 0;//шаха нет
         }
 
@@ -915,11 +914,7 @@ public class Play2 extends AppCompatActivity {
             keyR=1;
             ChaheQ=0;
 
-            System.out.println("Контроль выход isChahe "+keyR);
-            for(int i=0;i<=63;i++){
-                System.out.println("Выход в isChahe "+i +" id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF+" номер клетки "+" сейчас ход "+moveFlag );
-            }
-            System.out.println(board[Nfield].isFigure+" фф выход");
+            System.out.println(" Контроль выход isChahe ход "+moveCount);
             return 1;//шах есть
         }
 
@@ -927,11 +922,12 @@ public class Play2 extends AppCompatActivity {
     }
     public ArrayList Pat(){
         // System.out.println("PAT In");
-        System.out.println("ход номер "+moveCount+" ?вход Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
+        System.out.println(" Контроль вход PAT ход "+moveCount);
+        // System.out.println("ход номер "+moveCount+" ?вход Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
         //keyR=1;
         ChaheQ=0;
         ChaheKey=1;
-        System.out.println("Контроль вход Pat "+keyR);
+        //System.out.println("Контроль вход Pat "+keyR);
         ArrayList<Integer> Plist = new ArrayList<>();
         Plist.addAll(list);//cохранили массив возможных ходов в Plist
         list.clear();//очистили массив возможных ходов
@@ -1038,16 +1034,15 @@ public class Play2 extends AppCompatActivity {
         ChaheKey=0;
         keyR=1;
         ChaheQ=0;
-        System.out.println("Контроль выход Pat "+keyR);
-        System.out.println("ход номер "+moveCount+" ?выход Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
+        System.out.println(" Контроль выход PAT ход "+moveCount);
         return bufer;
 
     }
 
     public ArrayList Shah(){//массив битых полей расчитан для полей которые бьет противник
-
+        System.out.println(" Контроль вход SHAH ход "+moveCount);
         keyR=0;
-        System.out.println("Контроль вход Shah "+keyR);
+        //System.out.println("Контроль вход Shah "+keyR);
         ChaheKey=1;
         ArrayList<Integer> Clist = new ArrayList<>();
         Clist.addAll(list);//cохранили массив возможных ходов в Clist
@@ -1125,7 +1120,7 @@ public class Play2 extends AppCompatActivity {
         ChaheKey=0;
         keyR=1;
         ChaheQ=0;
-        System.out.println("Контроль выход Shah "+keyR);
+        System.out.println(" Контроль выход SHAH ход "+moveCount);
         return bufer;
     }
     public int toPx(int valueInDp ){
@@ -1134,78 +1129,73 @@ public class Play2 extends AppCompatActivity {
         return valueInPx;
     }
     public void test(View v){
+        System.out.println("Зашёл в test"+moveCount);
         idOfButton2=v.getResources().getResourceName(v.getId());
         fIdOfButton2=Integer.parseInt(idOfButton2.substring(32));
         this.board=board;
-        int K=0;
-        if (moveFlag==0){K=GeoOfWKing;}
-        else{K=GeoOfBKing;}
-        System.out.println("ДО,ПРоверка isChahe");
-        System.out.println("ход номер "+moveCount+" №0 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
-        for(int i=0;i<=63;i++) {
-            System.out.println(i +" id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF+" номер клетки "+" сейчас ход "+moveFlag );
-        }
-        //if(Shah().indexOf(K)==-1){System.out.println("ход номер "+moveCount+" №-1 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);}
-        if(Shah().indexOf(K)!=-1) {
-            System.out.println("< if ");
-
-            // System.out.println("ход номер "+moveCount+" №1 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
-            if (Pat().size() == 0) {
-                textView = findViewById(R.id.textView);
-                textView.setText("МАТ");
-                System.out.println("MAT");
-                // System.out.println("$$1 ход "+moveCount);
-                //System.out.println("ход номер "+moveCount+" №2 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
-
-            }
-            // if (Pat().size()!=0){System.out.println("ход номер "+moveCount+" №-2 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);}
-
-
-            else {
-                textView = findViewById(R.id.textView);
-                textView = findViewById(R.id.textView);
-
-                textView.setText("ШАХ");
-                System.out.println("ШАХ");
-                // System.out.println("$$2 ход "+moveCount);}
-            }
-        }
-        else if (Pat().size()==0){
-            System.out.println("< else if ");
-            System.out.println("ПАТ");
-            textView=findViewById(R.id.textView);
-            textView.setText("ПАТ");
-            System.out.println("ПАТ");
-            //System.out.println("$$3 ход "+moveCount);
-            // System.out.println("ход номер "+moveCount+" №3 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
-
-        }
-        else {
-            System.out.println("< else ");
-            //System.out.println("ход номер "+moveCount+" №4 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
-            System.out.println("##########################################################1");
-            textView = findViewById(R.id.textView);
-            textView.setText(" НЕ МАТ НЕ ШАХ НЕ ПАТ");
-            System.out.println("НЕ MAT НЕ ШАХ" );
-            System.out.println( "buf "+Pat());
-            System.out.println( "list "+list);
-            System.out.println( "ChaheQ "+ChaheQ);
-            System.out.println("##########################################################2");
-            //System.out.println("$$4 ход "+moveCount);
-            //textView.setText( Pat(moveFlag,list).size());
-            //System.out.println("/////////////////////////////////////////////////Пользователь может пойти"+Pat(moveFlag,list).size());}
-        }
-       /* System.out.println("ПОСЛЕ,ПРоверка isChahe");
-        for(int i=0;i<=63;i++) {
-            System.out.println("id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF+" номер клетки "+i);
-        }*/
-
-        //System.out.println("AFTER< "+list+" / "+ChaheQ+" / "+ChaheKey+" / "+keyR+" / "+moveFlag+" / "+buttonFlag+" / "+GeoOfBKing+" / "+GeoOfWKing+" / "+fIdOfButton+" / "+fIdOfButton2);
 
         if(buttonFlag==0){//фигура не выбрана,ход не сделан
             idOfButton=v.getResources().getResourceName(v.getId());//получаем айди кнопки
             fIdOfButton=Integer.parseInt(idOfButton.substring(32));//финальная цифра id для использования для поиска по массиву
             textView=findViewById(R.id.textView);
+            int K=0;
+            if (moveFlag==0){K=GeoOfWKing;}
+            else{K=GeoOfBKing;}
+
+            //if(Shah().indexOf(K)==-1){System.out.println("ход номер "+moveCount+" №-1 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);}
+
+            if(Shah().indexOf(K)!=-1) {
+
+
+                // System.out.println("ход номер "+moveCount+" №1 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
+
+                if (Pat().size() == 0) {
+                    textView = findViewById(R.id.textView);
+                    textView.setText("МАТ");
+                    System.out.println("MAT");
+                    // System.out.println("$$1 ход "+moveCount);
+                    //System.out.println("ход номер "+moveCount+" №2 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
+
+                }
+                // if (Pat().size()!=0){System.out.println("ход номер "+moveCount+" №-2 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);}
+
+
+                else {
+                    textView = findViewById(R.id.textView);
+                    textView = findViewById(R.id.textView);
+
+                    textView.setText("ШАХ");
+                    System.out.println("ШАХ");
+                    // System.out.println("$$2 ход "+moveCount);}
+                }
+
+            }
+            else if (Pat().size()==0){
+
+                System.out.println("ПАТ");
+                textView=findViewById(R.id.textView);
+                textView.setText("ПАТ");
+                System.out.println("ПАТ");
+                //System.out.println("$$3 ход "+moveCount);
+                // System.out.println("ход номер "+moveCount+" №3 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
+
+            }
+            else {
+
+                //System.out.println("ход номер "+moveCount+" №4 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
+
+                textView = findViewById(R.id.textView);
+                textView.setText(" НЕ МАТ НЕ ШАХ НЕ ПАТ");
+                System.out.println("НЕ MAT НЕ ШАХ" );
+                System.out.println("~~~~~~~~~~~"+moveCount);
+                System.out.println( "buf "+Pat());
+                System.out.println( "list "+list);
+                System.out.println( "ChaheQ "+ChaheQ);
+
+                //System.out.println("$$4 ход "+moveCount);
+                //textView.setText( Pat(moveFlag,list).size());
+                //System.out.println("/////////////////////////////////////////////////Пользователь может пойти"+Pat(moveFlag,list).size());}
+            }
             // textView.setText("эта фигура:"+board[fIdOfButton].nameF);
             //textView.setText("эта фигура:"+board[fIdOfButton].getidF());
             keyR=1;
@@ -1222,11 +1212,11 @@ public class Play2 extends AppCompatActivity {
 
                 }
                 if(board[fIdOfButton].nameF=="Ладья"){//если эта фигура ладья
-                    System.out.println("Вход в ладью "+keyR);
+                    //System.out.println("Вход в ладью "+keyR);
                     rook(board);
                     //System.out.println(list);
-                    System.out.println("Выход из ладьи "+keyR);
-                    System.out.println("list после ладьи "+list);
+                    //System.out.println("Выход из ладьи "+keyR);
+                    //System.out.println("list после ладьи "+list);
 
                 }
                 if(board[fIdOfButton].nameF=="Слон"){//если эта фигура слон
@@ -1289,11 +1279,11 @@ public class Play2 extends AppCompatActivity {
             // else {
             imageView.setY(imageView.getY() + ((board[fIdOfButton2].getVertical() - board[fIdOfButton].getVertical())) * px);
 
-            System.out.println("текущий y:" + imageView.getY() + " 2 часть:" + ((board[fIdOfButton2].getVertical() - board[fIdOfButton].getVertical())) * px);
+            //System.out.println("текущий y:" + imageView.getY() + " 2 часть:" + ((board[fIdOfButton2].getVertical() - board[fIdOfButton].getVertical())) * px);
             imageView.setX(imageView.getX() + ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * px);
              /*imageView.setImageResource(R.drawable.black_bishop);
              imageView.setMaxHeight(49 );*/
-            System.out.println("текущий х:" + imageView.getX() + " 2часть:" + ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * px);
+            //System.out.println("текущий х:" + imageView.getX() + " 2часть:" + ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * px);
             //}
             //String a="типо перемещение";
             //textView=findViewById(R.id.textView);`
