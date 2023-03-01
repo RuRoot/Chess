@@ -212,6 +212,14 @@ public class Play2 extends AppCompatActivity {
 
 
     }
+
+    int wasMooveBKing =0;//для рокировки ходил ли черный король
+    int wasMooveWKing =0;//для рокировки ходил ли белый король
+    int wasMooveRook0 =0;//для рокировки ходила ли черная ладья на 0
+    int wasMooveRook7 =0;//для рокировки ходила ли черная ладья на 7
+    int wasMooveRook56 =0;//для рокировки ходила ли белая ладья на 56
+    int wasMooveRook63=0;//для рокировки ходила ли белая ладья на 63
+
     String idOfButton;//айди кнопки
     int fIdOfButton=0;//финальная цифра id для использования для поиска по массиву
     String idOfButton2;//айди кнопки (2)
@@ -240,8 +248,11 @@ public class Play2 extends AppCompatActivity {
             // System.out.println("fIdOfButton2:"+fIdOfButton2);
             imageView.setVisibility(View.INVISIBLE);}
         if(board[fIdOfButton].nameF=="Король"){
-            if(board[fIdOfButton].colorF==1){GeoOfBKing=fIdOfButton2;}
-            else{GeoOfWKing=fIdOfButton2;}
+            if(board[fIdOfButton].colorF==1){GeoOfBKing=fIdOfButton2;
+                wasMooveBKing=1;}
+            else{GeoOfWKing=fIdOfButton2;
+                wasMooveWKing=1;}
+
             // System.out.println("Позиция черного короля: "+GeoOfBKing+"Позиция белого короля: "+GeoOfWKing);
         }
 
@@ -257,6 +268,125 @@ public class Play2 extends AppCompatActivity {
         //System.out.println(Pat(moveFlag,list)+" массив возможных ходов");
 
     }
+    public void graphicCastling(){
+        change(board);//переставили короля
+        if (moveFlag==0){
+            wasMooveWKing=0;
+            if(fIdOfButton2<4){fIdOfButton=0;
+                fIdOfButton2=3;}
+            else{fIdOfButton=7;
+                fIdOfButton2=5;}
+        }
+        else{wasMooveWKing=0;
+            if(fIdOfButton2<60){fIdOfButton=56;
+                fIdOfButton2=59;}
+            else{fIdOfButton=63;
+                fIdOfButton2=61;}
+        }
+        change(board);
+    }
+    public void castling(){// расчет возможности рокировки
+        if (moveFlag==1) {
+            if (wasMooveBKing == 0 & wasMooveRook7 == 0) {
+                int value1 = 1;//если есть фигуры break
+                int value2 = 1;//есть ли шах
+                for (int i = GeoOfBKing; i < 8; i++) {
+                    if (board[i].isFigure == 1) {
+                        value1 = 0;
+                        break;
+                    }
+                    if (i < 7 & Shah().indexOf(i) != 0) {
+                        value2 = 0;
+                    }
+                }
+                if (value1 * value2 != 0) {
+                    list.add(6);
+                }//можно сделать рокировку
+            }
+
+
+            if (wasMooveBKing == 0 & wasMooveRook0 == 0) {
+                int value1 = 1;//если есть фигуры break
+                int value2 = 1;//есть ли шах
+                for (int i = GeoOfBKing; i > -1; i--) {
+                    if (board[i].isFigure == 1) {
+                        value1 = 0;
+                        break;
+                    }
+                    if (i > 1 & Shah().indexOf(i) != 0) {
+                        value2 = 0;
+                    }
+                }
+                if (value1 * value2 != 0) {
+                    list.add(2);
+                }//можно сделать рокировку
+            }
+        }
+        else{
+            if(wasMooveWKing == 0 & wasMooveRook63 == 0){
+                int value1 = 1;//если есть фигуры break
+                int value2 = 1;//есть ли шах
+                for(int i=GeoOfWKing;i<64;i++){
+                    if (board[i].isFigure == 1){
+                        value1=0;
+                        break;}
+                    if (i < 63 & Shah().indexOf(i) != 0){
+                        value2 = 0;
+                    }
+                }
+                if (value1*value2!=0){list.add(62);}//можно сделать рокировку
+            }
+
+            if(wasMooveWKing == 0 & wasMooveRook56 == 0){
+                int value1 = 1;//если есть фигуры break
+                int value2 = 1;//есть ли шах
+                for(int i=GeoOfWKing;i>55;i--){
+                    if (board[i].isFigure == 1){
+                        value1=0;
+                        break;}
+                    if (i > 57 & Shah().indexOf(i) != 0){
+                        value2 = 0;
+                    }
+                }
+                if (value1*value2!=0){list.add(58);}//можно сделать рокировку
+            }}
+
+    }
+
+    public void statusCalculation(){
+        int K=0;
+        if (moveFlag==0){K=GeoOfWKing;}
+        else{K=GeoOfBKing;}
+        if(Shah().indexOf(K)!=-1) {
+            if (Pat().size() == 0) {
+                textView = findViewById(R.id.textView);
+                textView.setText("МАТ");
+                System.out.println("MAT");
+            }
+            else {
+                textView = findViewById(R.id.textView);
+                textView = findViewById(R.id.textView);
+                textView.setText("ШАХ");
+                System.out.println("ШАХ");
+            }
+
+        }
+        else if (Pat().size()==0){
+
+            System.out.println("ПАТ");
+            textView=findViewById(R.id.textView);
+            textView.setText("ПАТ");
+            System.out.println("ПАТ");
+        }
+        else {
+            textView = findViewById(R.id.textView);
+            textView.setText(" НЕ МАТ НЕ ШАХ НЕ ПАТ");
+            System.out.println("НЕ MAT НЕ ШАХ" );
+            System.out.println("~~~~~~~~~~~"+moveCount);
+            System.out.println( "buf "+Pat());
+            System.out.println( "list "+list);
+            System.out.println( "ChaheQ "+ChaheQ);
+        }}
 
 
     public  void pawn(cell[]board) {
@@ -315,7 +445,7 @@ public class Play2 extends AppCompatActivity {
                     list.add(z - 7);
                 }}
         }
-        // System.out.println("Контроль выход pawn "+keyR);
+
 
     }
 
@@ -428,6 +558,7 @@ public class Play2 extends AppCompatActivity {
                     list.add(j*8+i-2);}
             }
         }
+        if (keyR==1){castling();}
     }
 
     public  void rook(cell[]board) {//Ладья
@@ -1138,7 +1269,8 @@ public class Play2 extends AppCompatActivity {
             idOfButton=v.getResources().getResourceName(v.getId());//получаем айди кнопки
             fIdOfButton=Integer.parseInt(idOfButton.substring(32));//финальная цифра id для использования для поиска по массиву
             textView=findViewById(R.id.textView);
-            int K=0;
+            // statusCalculation();
+           /* int K=0;
             if (moveFlag==0){K=GeoOfWKing;}
             else{K=GeoOfBKing;}
 
@@ -1195,7 +1327,7 @@ public class Play2 extends AppCompatActivity {
                 //System.out.println("$$4 ход "+moveCount);
                 //textView.setText( Pat(moveFlag,list).size());
                 //System.out.println("/////////////////////////////////////////////////Пользователь может пойти"+Pat(moveFlag,list).size());}
-            }
+            }*/
             // textView.setText("эта фигура:"+board[fIdOfButton].nameF);
             //textView.setText("эта фигура:"+board[fIdOfButton].getidF());
             keyR=1;
@@ -1289,10 +1421,17 @@ public class Play2 extends AppCompatActivity {
             //textView=findViewById(R.id.textView);`
             //textView.setText("типо перемещение");
             list.clear();//очищаем список возможных ходов
-            change(board);
+            if (board[fIdOfButton].nameF=="Король" & Math.abs(fIdOfButton-fIdOfButton2)==2){
+                graphicCastling();
+
+            }
+            else {
+                change(board);}
             buttonFlag = 0;
             moveFlag = Math.abs(moveFlag - 1);
             moveCount++;
+
+            statusCalculation();
             //imageView.setY(imageView.getY()); //+ ((board[fIdOfButton2].getVertical() - board[fIdOfButton].getVertical())) * valueInPx);
             //imageView.setX(imageView.getX()); //+ ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * valueInPx);
             //textView=findViewById(R.id.textView);
