@@ -368,7 +368,7 @@ public class Play2 extends AppCompatActivity {
             if ((board[j*8+i].isFigure == 1)  & (board[j*8+i].colorF != board[z].colorF) || (board[j*8+i].isFigure == 0)){
                 if (keyR==0){
                     list.add(j*8+i);}
-                else if(isChahe(board,z,(j-1)*8+i-2,board[z].colorF)==0){
+                else if(isChahe(board,z,j*8+i,board[z].colorF)==0){
                     list.add(j*8+i);}
             }
         }
@@ -872,6 +872,7 @@ public class Play2 extends AppCompatActivity {
 
     }
     public ArrayList Pat(int moveFlag,ArrayList list){
+        keyR=0;
         ChaheKey=1;
         ArrayList<Integer> Plist = new ArrayList<>();
         Plist.addAll(list);//cохранили массив возможных ходов в Plist
@@ -1007,6 +1008,38 @@ public class Play2 extends AppCompatActivity {
     public void test(View v){
 
         this.board=board;
+        int K=0;
+        if (moveFlag==0){K=GeoOfWKing;}
+        else{K=GeoOfBKing;}
+        if(Shah(moveFlag,list).indexOf(K)!=-1){
+
+            if (Pat(moveFlag,list).size()==0){
+                textView=findViewById(R.id.textView);
+                textView.setText("МАТ");
+                System.out.println("MAT");
+
+            }
+
+            else{textView=findViewById(R.id.textView);
+                textView=findViewById(R.id.textView);
+
+                textView.setText("ШАХ");
+                System.out.println("ШАХ");}
+        }
+        else if (Pat(moveFlag,list).size()==0){
+            textView=findViewById(R.id.textView);
+            textView.setText("ПАТ");
+            System.out.println("ПАТ");
+
+        }
+        else{textView=findViewById(R.id.textView);
+            textView.setText(" НЕ МАТ НЕ ШАХ");
+            System.out.println("НЕ MAT НЕ ШАХ");
+            //textView.setText( Pat(moveFlag,list).size());
+            System.out.println("/////////////////////////////////////////////////Пользователь может пойти"+Pat(moveFlag,list).size());}
+
+
+
         idOfButton2=v.getResources().getResourceName(v.getId());
         fIdOfButton2=Integer.parseInt(idOfButton2.substring(32));
 
@@ -1015,8 +1048,8 @@ public class Play2 extends AppCompatActivity {
             idOfButton=v.getResources().getResourceName(v.getId());//получаем айди кнопки
             fIdOfButton=Integer.parseInt(idOfButton.substring(32));//финальная цифра id для использования для поиска по массиву
             textView=findViewById(R.id.textView);
-            textView.setText("эта фигура:"+board[fIdOfButton].nameF);
-            textView.setText("эта фигура:"+board[fIdOfButton].getidF());
+            // textView.setText("эта фигура:"+board[fIdOfButton].nameF);
+            //textView.setText("эта фигура:"+board[fIdOfButton].getidF());
             keyR=1;
 
 
@@ -1070,15 +1103,15 @@ public class Play2 extends AppCompatActivity {
 
         else if(buttonFlag==1 & list.indexOf(fIdOfButton2)!=-1) {//фигура выбрана ,ход не сделан/сделан(если в списке ходов найдена эта клетка)
             //this.img=img;
-            textView=findViewById(R.id.textView);
+            // textView=findViewById(R.id.textView);
 
 
             imageView = findViewById(img[board[fIdOfButton].getidF()]);
-            System.out.println("Текущее расположение дел:" + " id кнопки которая была нажата сначала: " + fIdOfButton + " id кнопки которая была нажата потом: " + fIdOfButton2 + " индекс изображения в массиве id изоброжения " + board[fIdOfButton].getidF());
-            textView = findViewById(R.id.textView);
-            textView.setText("" + board[fIdOfButton].getidF());
+            //System.out.println("Текущее расположение дел:" + " id кнопки которая была нажата сначала: " + fIdOfButton + " id кнопки которая была нажата потом: " + fIdOfButton2 + " индекс изображения в массиве id изоброжения " + board[fIdOfButton].getidF());
+            // textView = findViewById(R.id.textView);
+            //textView.setText("" + board[fIdOfButton].getidF());
             //textView.setText(""+fIdOfButton);
-            textView = findViewById(R.id.textView);
+            // textView = findViewById(R.id.textView);
             //textView.setText(imageView.getLeft()+" "+imageView.getRight()+" "+imageView.getHeight() );
             int valueInDp = 49;
             /* int valueInPx = (int) TypedValue.applyDimension(
