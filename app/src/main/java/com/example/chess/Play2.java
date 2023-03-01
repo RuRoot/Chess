@@ -225,6 +225,7 @@ public class Play2 extends AppCompatActivity {
     int GeoOfWKing=60;//позиция белого короля
     int ChaheKey=0;//ключ шах(1)/ход(0)
     int ChaheQ=0;
+    int keyR=1;//0- только Shah(для противника) 1- только isChahe(для себя,не открываем короля)
 
     String idOfImage;
     public int[] img = new int[]{R.id.imageView0,R.id.imageView1,R.id.imageView2,R.id.imageView3,R.id.imageView4,R.id.imageView5,R.id.imageView6,R.id.imageView7,R.id.imageView8,R.id.imageView9,R.id.imageView10,R.id.imageView11,R.id.imageView12,R.id.imageView13,R.id.imageView14,R.id.imageView15,R.id.imageView48,R.id.imageView49,R.id.imageView50,R.id.imageView51,R.id.imageView52,R.id.imageView53,R.id.imageView54,R.id.imageView55,R.id.imageView56,R.id.imageView57,R.id.imageView58,R.id.imageView59,R.id.imageView60,R.id.imageView61,R.id.imageView62,R.id.imageView63};//массив id
@@ -240,6 +241,7 @@ public class Play2 extends AppCompatActivity {
             else{GeoOfWKing=fIdOfButton2;}
             System.out.println("Позиция черного короля: "+GeoOfBKing+"Позиция белого короля: "+GeoOfWKing);
         }
+
         board[fIdOfButton2].idF=board[fIdOfButton].idF;//в связи с переходом меняем id фигуры на клетке
         board[fIdOfButton].idF=100;
         board[fIdOfButton2].isFigure=board[fIdOfButton].isFigure;//в связи с переходом меняем cостояние нахождения фигур
@@ -249,15 +251,13 @@ public class Play2 extends AppCompatActivity {
         board[fIdOfButton2].colorF=board[fIdOfButton].colorF;//в связи с переходом меняем id фигуры на клетке
         board[fIdOfButton].colorF=0;
         //System.out.println(Shah(moveFlag,list)+" массив битых полей");
-        System.out.println(Pat(moveFlag,list)+" массив возможных ходов");
+        //System.out.println(Pat(moveFlag,list)+" массив возможных ходов");
 
     }
-    public int checkMove(cell[]board,int r){
 
-        return 1;
-    }
 
     public  void pawn(cell[]board) {
+
         int z=fIdOfButton;
         if(ChaheKey==1){z=ChaheQ;}
         if (board[z].colorF == 1) {//если пешка чёрная
@@ -309,134 +309,110 @@ public class Play2 extends AppCompatActivity {
         int jn=board[z].getVertical();
         int j=jn;
         int i=in;
-        System.out.println(list);
+
 
         System.out.println("#1");//вниз
         System.out.println("Король i:"+i+" j:"+j+" j*8+i-1:"+(j*8+i-1));
         if((j*8+i-1)>-1 & (j*8+i-1)<64) {
-            /*if (board[j * 8 + i - 1].isFigure == 1 & board[j * 8 + i - 1].colorF != board[z].colorF) {
-                list.add(j*8+i-1);
-            } else if (board[j * 8 + i - 1].isFigure == 1 & board[j * 8 + i - 1].colorF == board[z].colorF) {
-            } else {
-                list.add(j*8+i-1);
-            }*/
-            if ((((board[j*8+i-1].isFigure == 1)  & (board[j*8+i-1].colorF != board[z].colorF)) || (board[j*8+i-1].isFigure == 0 ))& (isChahe(board,z,j*8+i-1,board[z].colorF)==0)){
-                list.add(j*8+i-1);
-
-
+            if ((board[j*8+i-1].isFigure == 1)  & (board[j*8+i-1].colorF != board[z].colorF) || (board[j*8+i-1].isFigure == 0)){
+                if (keyR==0){
+                    list.add(j*8+i-1);}
+                else if(isChahe(board,z,j*8+i-1,board[z].colorF)==0){
+                    list.add(j*8+i-1);}
             }
         }
+
+
 
         System.out.println("#2"); //вверх
         System.out.println("Король i:"+i+" j:"+j+" (j-2)*8+i-1:"+((j-2)*8+i-1));
         if(((j-2)*8+i-1)>-1 & ((j-2)*8+i-1)<64) {
-            /* if (board[(j - 2) * 8 + i - 1].isFigure == 1  & board[(j - 2) * 8 + i - 1].colorF != board[z].colorF) {
-                list.add((j-2)*8+i-1);
-            } else if (board[(j - 2) * 8 + i - 1].isFigure == 1 & board[(j - 2) * 8 + i - 1].colorF == board[z].colorF) {
-            } else {
-                list.add((j-2)*8+i-1);
-            }*/
-            //if ((board[(j - 2) * 8 + i - 1].isFigure == 1  & board[(j - 2) * 8 + i - 1].colorF != board[z].colorF || board[(j - 2) * 8 + i - 1].isFigure == 0 )& (isChahe(board,z,(j-2)*8+i-1,board[z].colorF)==0)) {
-            //list.add((j-2)*8+i-1);
-
-
-            //}
+            if ((board[(j - 2) * 8 + i - 1].isFigure == 1)  & (board[(j - 2) * 8 + i - 1].colorF != board[z].colorF) || (board[(j - 2) * 8 + i - 1].isFigure == 0)){
+                if (keyR==0){
+                    list.add((j-2)*8+i-1);}
+                else if(isChahe(board,z,(j-2)*8+i-1,board[z].colorF)==0){
+                    list.add((j-2)*8+i-1);}
+            }
         }
+
+
+
         System.out.println("#3");//вправо
         System.out.println("Король i:"+i+" j:"+j+" (j-1)*8+i:"+((j-1)*8+i));
         if(((j-1)*8+i)>-1 & ((j-1)*8+i)<64) {
-            /* if (board[(j-1)*8+i].isFigure == 1 & board[(j-1)*8+i].colorF != board[z].colorF) {
-                list.add((j-1)*8+i);
-            } else if (board[(j-1)*8+i].isFigure == 1 & board[(j-1)*8+i].colorF == board[z].colorF) {
-            } else {
-                list.add((j-1)*8+i);
-            }*/
-            // if ((board[(j-1)*8+i].isFigure == 1  & board[(j-1)*8+i].colorF != board[z].colorF || board[(j-1)*8+i].isFigure == 0 )& (isChahe(board,z,(j-1)*8+i,board[z].colorF)==0)){
-            //list.add((j-1)*8+i);
-
-
-            //}
+            if ((board[(j-1)*8+i].isFigure == 1)  & (board[(j-1)*8+i].colorF != board[z].colorF) || (board[(j-1)*8+i].isFigure == 0)){
+                if (keyR==0){
+                    list.add((j-1)*8+i);}
+                else if(isChahe(board,z,(j-1)*8+i,board[z].colorF)==0){
+                    list.add((j-1)*8+i);}
+            }
         }
+
+
         System.out.println("#4"); //влево
         System.out.println("Король i:"+i+" j:"+j+" (j-1)*8+i-2:"+((j-1)*8+i-2));
         if(((j-1)*8+i-2)>-1 & ((j-1)*8+i-2)<64) {
-            /*if(board[(j-1)*8+i-2].isFigure==1 & board[(j-1)*8+i-2].colorF!=board[z].colorF){
-                list.add((j-1)*8+i-2);
+            if ((board[(j-1)*8+i-2].isFigure == 1)  & (board[(j-1)*8+i-2].colorF != board[z].colorF) || (board[(j-1)*8+i-2].isFigure == 0)){
+                if (keyR==0){
+                    list.add((j-1)*8+i-2);}
+                else if(isChahe(board,z,(j-1)*8+i-2,board[z].colorF)==0){
+                    list.add((j-1)*8+i-2);}
             }
-            else if(board[(j-1)*8+i-2].isFigure==1 & board[(j-1)*8+i-2].colorF==board[z].colorF){
-            }
-            else{
-                list.add((j-1)*8+i-2);
-            }*/
-            // if ((board[(j-1)*8+i-2].isFigure == 1  & board[(j-1)*8+i-2].colorF != board[z].colorF || board[(j-1)*8+i-2].isFigure == 0 )& (isChahe(board,z,(j-1)*8+i-2,board[z].colorF)==0)){
-            //list.add((j-1)*8+i-2);
-
-
-            // }
         }
+
+
+
         System.out.println("#5");//вниз+вправо
         System.out.println("Король i:"+i+" j:"+j+" j*8+i:"+(j*8+i));
         if((j*8+i)>-1 & (j*8+i)<64) {
-            /*if (board[j*8+i].isFigure == 1 & board[j*8+i].colorF != board[z].colorF) {
-                list.add(j*8+i);
-            } else if (board[j*8+i].isFigure == 1 & board[j*8+i].colorF == board[z].colorF) {
-            } else {
-                list.add(j*8+i);
-            }*/
-            //if ((board[j*8+i].isFigure == 1  & board[j*8+i].colorF != board[z].colorF || board[j*8+i].isFigure == 0 )& (isChahe(board,z,j*8+i,board[z].colorF)==0)){
-            //list.add(j*8+i);
-
-
-            //}
+            if ((board[j*8+i].isFigure == 1)  & (board[j*8+i].colorF != board[z].colorF) || (board[j*8+i].isFigure == 0)){
+                if (keyR==0){
+                    list.add(j*8+i);}
+                else if(isChahe(board,z,(j-1)*8+i-2,board[z].colorF)==0){
+                    list.add(j*8+i);}
+            }
         }
+
+
+
         System.out.println("#6"); //вверх+влево
         System.out.println("Король i:"+i+" j:"+j+" (j-2)*8+i-2:"+((j-2)*8+i-2));
         if(((j-2)*8+i-2)>-1 & ((j-2)*8+i-2)<64 ) {
-           /* if (board[(j-2)*8+i-2].isFigure == 1 & board[(j-2)*8+i-2].colorF != board[z].colorF) {
-                list.add((j-2)*8+i-2);
-            } else if (board[(j-2)*8+i-2].isFigure == 1 & board[(j-2)*8+i-2].colorF == board[z].colorF) {
-            } else {
-                list.add((j-2)*8+i-2);
-            }*/
-            //if ((board[(j-2)*8+i-2].isFigure == 1  & board[(j-2)*8+i-2].colorF != board[z].colorF || board[(j-2)*8+i-2].isFigure == 0 )& (isChahe(board,z,(j-2)*8+i-2,board[z].colorF)==0)){
-            //list.add((j-2)*8+i-2);
-
-
-            //}
+            if ((board[(j-2)*8+i-2].isFigure == 1)  & (board[(j-2)*8+i-2].colorF != board[z].colorF) || (board[(j-2)*8+i-2].isFigure == 0)){
+                if (keyR==0){
+                    list.add((j-2)*8+i-2);}
+                else if(isChahe(board,z,(j-2)*8+i-2,board[z].colorF)==0){
+                    list.add((j-2)*8+i-2);}
+            }
         }
+
+
+
+
         System.out.println("#7");//вверх+вправо
         System.out.println("Король i:"+i+" j:"+j+" (j-2)*8+i:"+((j-2)*8+i));
         if(((j-2)*8+i)>-1 & ((j-2)*8+i)<64) {
-            /*if (board[(j-2)*8+i].isFigure == 1 & board[(j-2)*8+i].colorF != board[z].colorF) {
-                list.add((j-2)*8+i);
-            } else if (board[(j-2)*8+i].isFigure == 1 & board[(j-2)*8+i].colorF == board[z].colorF) {
-            } else {
-                list.add((j-2)*8+i);
-            }*/
-            //if ((board[(j-2)*8+i].isFigure == 1  & board[(j-2)*8+i].colorF != board[z].colorF || board[(j-2)*8+i].isFigure == 0 )& (isChahe(board,z,(j-2)*8+i,board[z].colorF)==0)){
-            //list.add((j-2)*8+i);
-
-
-            //}
+            if ((board[(j-2)*8+i].isFigure == 1)  & (board[(j-2)*8+i].colorF != board[z].colorF) || (board[(j-2)*8+i].isFigure == 0)){
+                if (keyR==0){
+                    list.add((j-2)*8+i);}
+                else if(isChahe(board,z,(j-2)*8+i,board[z].colorF)==0){
+                    list.add((j-2)*8+i);}
+            }
         }
+
+
         System.out.println("#8"); //вниз+влево
         System.out.println("Король i:"+i+" j:"+j+" j*8+i-2:"+(j*8+i-2));
         if((j*8+i-2)>-1 & (j*8+i-2)<64) {
-            /*if(board[j*8+i-2].isFigure==1 & board[j*8+i-2].colorF!=board[z].colorF){
-                list.add(j*8+i-2);
+            if ((board[j*8+i-2].isFigure == 1)  & (board[j*8+i-2].colorF != board[z].colorF) || (board[j*8+i-2].isFigure == 0)){
+                if (keyR==0){
+                    list.add(j*8+i-2);}
+                else if(isChahe(board,z,j*8+i-2,board[z].colorF)==0){
+                    list.add(j*8+i-2);}
             }
-            else if(board[j*8+i-2].isFigure==1 & board[j*8+i-2].colorF==board[z].colorF){
-            }
-            else{
-                list.add(j*8+i-2);
-            }*/
-            //if ((board[j*8+i-2].isFigure == 1  & board[j*8+i-2].colorF != board[z].colorF || board[j*8+i-2].isFigure == 0 )& (isChahe(board,z,j*8+i-2,board[z].colorF)==0)){
-            //list.add(j*8+i-2);
-
-
-            //}
         }
     }
+
     public  void rook(cell[]board) {//Ладья
         int z=fIdOfButton;
         if(ChaheKey==1){z=ChaheQ;}
@@ -451,15 +427,23 @@ public class Play2 extends AppCompatActivity {
             System.out.println("Ладья i:"+i+" j:"+j+" j*8+i-1:"+(j*8+i-1));
             if((j*8+i-1)>-1 & (j*8+i-1)<64) {
                 if (board[j * 8 + i - 1].isFigure == 1 & board[j * 8 + i - 1].colorF != board[z].colorF) {
-                    list.add(j*8+i-1);
-                    break;
-                } else if (board[j * 8 + i - 1].isFigure == 1 & board[j * 8 + i - 1].colorF == board[z].colorF) {
-                    break;
-                } else {
-                    list.add(j*8+i-1);
+                    if (keyR==0){
+                        list.add(j*8+i-1);}
+                    else if(isChahe(board,z,j*8+i-1,board[z].colorF)==0){
+                        list.add(j*8+i-1);}
+                    break;}
+                else if (board[j * 8 + i - 1].isFigure == 1 & board[j * 8 + i - 1].colorF == board[z].colorF) {
+                    break;}
+                else {
+                    if (keyR==0){
+                        list.add(j*8+i-1);}
+                    else if(isChahe(board,z,j*8+i-1,board[z].colorF)==0){
+                        list.add(j*8+i-1);}
                 }
                 j = j + 1;
             }
+
+
             else{
                 break;
             }
@@ -473,12 +457,18 @@ public class Play2 extends AppCompatActivity {
             System.out.println("Ладья i:"+i+" j:"+j+" (j-2)*8+i-1:"+((j-2)*8+i-1));
             if(((j-2)*8+i-1)>-1 & ((j-2)*8+i-1)<64) {
                 if (board[(j - 2) * 8 + i - 1].isFigure == 1 & board[(j - 2) * 8 + i - 1].colorF != board[z].colorF) {
-                    list.add((j-2)*8+i-1);
+                    if (keyR==0){
+                        list.add((j - 2) * 8 + i - 1);}
+                    else if(isChahe(board,z,j*8+i-1,board[z].colorF)==0){
+                        list.add((j - 2) * 8 + i - 1);}
                     break;
                 } else if (board[(j - 2) * 8 + i - 1].isFigure == 1 & board[(j - 2) * 8 + i - 1].colorF == board[z].colorF) {
                     break;
                 } else {
-                    list.add((j-2)*8+i-1);
+                    if (keyR==0){
+                        list.add((j - 2) * 8 + i - 1);}
+                    else if(isChahe(board,z,(j - 2) * 8 + i - 1,board[z].colorF)==0){
+                        list.add((j - 2) * 8 + i - 1);}
                 }
                 j = j - 1;
             }
@@ -495,12 +485,18 @@ public class Play2 extends AppCompatActivity {
             System.out.println("Ладья i:"+i+" j:"+j+" (j-1)*8+i:"+((j-1)*8+i));
             if(((j-1)*8+i)>-1 & ((j-1)*8+i)<64) {
                 if (board[(j-1)*8+i].isFigure == 1 & board[(j-1)*8+i].colorF != board[z].colorF) {
-                    list.add((j-1)*8+i);
+                    if (keyR==0){
+                        list.add((j-1)*8+i);}
+                    else if(isChahe(board,z,(j-1)*8+i,board[z].colorF)==0){
+                        list.add((j-1)*8+i);}
                     break;
                 } else if (board[(j-1)*8+i].isFigure == 1 & board[(j-1)*8+i].colorF == board[z].colorF) {
                     break;
                 } else {
-                    list.add((j-1)*8+i);
+                    if (keyR==0){
+                        list.add((j-1)*8+i);}
+                    else if(isChahe(board,z,(j-1)*8+i,board[z].colorF)==0){
+                        list.add((j-1)*8+i);}
                 }
                 i = i + 1;
             }
@@ -516,14 +512,20 @@ public class Play2 extends AppCompatActivity {
             System.out.println("Ладья i:"+i+" j:"+j+" (j-1)*8+i-2:"+((j-1)*8+i-2));
             if(((j-1)*8+i-2)>-1 & ((j-1)*8+i-2)<64) {
                 if(board[(j-1)*8+i-2].isFigure==1 & board[(j-1)*8+i-2].colorF!=board[z].colorF){
-                    list.add((j-1)*8+i-2);
+                    if (keyR==0){
+                        list.add((j-1)*8+i-2);}
+                    else if(isChahe(board,z,(j-1)*8+i-2,board[z].colorF)==0){
+                        list.add((j-1)*8+i-2);}
                     break;
                 }
                 else if(board[(j-1)*8+i-2].isFigure==1 & board[(j-1)*8+i-2].colorF==board[z].colorF){
                     break;
                 }
                 else{
-                    list.add((j-1)*8+i-2);
+                    if (keyR==0){
+                        list.add((j-1)*8+i-2);}
+                    else if(isChahe(board,z,(j-1)*8+i-2,board[z].colorF)==0){
+                        list.add((j-1)*8+i-2);}
                 }
                 i=i-1;}
             else{
@@ -546,10 +548,17 @@ public class Play2 extends AppCompatActivity {
             if ((jn - board[(j - 3) * 8 + i].getVertical()) == 2 & (board[(j - 3) * 8 + i].getHorizontal() - in) == 1) {
 
                 if (board[(j - 3) * 8 + i].isFigure == 1 & board[(j - 3) * 8 + i].colorF != board[z].colorF) {
-                    list.add((j - 3) * 8 + i);
+                    if (keyR==0){
+                        list.add((j-3)*8+i);}
+                    else if(isChahe(board,z,(j-3)*8+i,board[z].colorF)==0){
+                        list.add((j-3)*8+i);}
+
                 } else if (board[(j - 3) * 8 + i].isFigure == 1 & board[(j - 3) * 8 + i].colorF == board[z].colorF) {
                 } else {
-                    list.add((j - 3) * 8 + i);
+                    if (keyR==0){
+                        list.add((j-3)*8+i);}
+                    else if(isChahe(board,z,(j-3)*8+i,board[z].colorF)==0){
+                        list.add((j-3)*8+i);}
                 }
             }
         }
@@ -558,10 +567,16 @@ public class Play2 extends AppCompatActivity {
         if(((j-2)*8+i+1)>-1 & ((j-2)*8+i+1)<64 ) {
             if ((jn-board[(j-2)*8+i+1].getVertical())==1 & (board[(j-2)*8+i+1].getHorizontal()-in)==2) {
                 if (board[(j-2)*8+i+1].isFigure == 1 & board[(j-2)*8+i+1].colorF != board[z].colorF) {
-                    list.add((j-2)*8+i+1);
+                    if (keyR==0){
+                        list.add((j-2)*8+i+1);}
+                    else if(isChahe(board,z,(j-2)*8+i+1,board[z].colorF)==0){
+                        list.add((j-2)*8+i+1);}
                 } else if (board[(j-2)*8+i+1].isFigure == 1 & board[(j-2)*8+i+1].colorF == board[z].colorF) {
                 } else {
-                    list.add((j-2)*8+i+1);
+                    if (keyR==0){
+                        list.add((j-2)*8+i+1);}
+                    else if(isChahe(board,z,(j-2)*8+i+1,board[z].colorF)==0){
+                        list.add((j-2)*8+i+1);}
                 }
             }}
         System.out.println("#3");//
@@ -569,10 +584,16 @@ public class Play2 extends AppCompatActivity {
         if((j*8+i+1)>-1 & (j*8+i+1)<64 ) {
             if ( (board[j*8+i+1].getVertical()-jn)==1 & (board[j*8+i+1].getHorizontal()-in)==2) {
                 if (board[j*8+i+1].isFigure == 1 & board[j*8+i+1].colorF != board[z].colorF ) {
-                    list.add(j*8+i+1);
+                    if (keyR==0){
+                        list.add(j*8+i+1);}
+                    else if(isChahe(board,z,j*8+i+1,board[z].colorF)==0){
+                        list.add(j*8+i+1);}
                 } else if (board[j*8+i+1].isFigure == 1 & board[j*8+i+1].colorF == board[z].colorF) {
                 } else {
-                    list.add(j*8+i+1);
+                    if (keyR==0){
+                        list.add(j*8+i+1);}
+                    else if(isChahe(board,z,j*8+i+1,board[z].colorF)==0){
+                        list.add(j*8+i+1);}
                 }
             }}
         System.out.println("#4");//
@@ -580,10 +601,16 @@ public class Play2 extends AppCompatActivity {
         if(((j+1)*8+i)>-1 & ((j+1)*8+i)<64 ) {
             if ( (board[(j+1)*8+i].getVertical()-jn)==2 & (board[(j+1)*8+i].getHorizontal()-in)==1) {
                 if (board[(j+1)*8+i].isFigure == 1 & board[(j+1)*8+i].colorF != board[z].colorF) {
-                    list.add((j+1)*8+i);
+                    if (keyR==0){
+                        list.add((j+1)*8+i);}
+                    else if(isChahe(board,z,(j+1)*8+i,board[z].colorF)==0){
+                        list.add((j+1)*8+i);}
                 } else if (board[(j+1)*8+i].isFigure == 1 & board[(j+1)*8+i].colorF == board[z].colorF) {
                 } else {
-                    list.add((j+1)*8+i);
+                    if (keyR==0){
+                        list.add((j+1)*8+i);}
+                    else if(isChahe(board,z,(j+1)*8+i,board[z].colorF)==0){
+                        list.add((j+1)*8+i);}
                 }
             }}
         System.out.println("#5");//
@@ -591,10 +618,16 @@ public class Play2 extends AppCompatActivity {
         if(((j+1)*8+i-2)>-1 & ((j+1)*8+i-2)<64) {
             if ( (board[(j+1)*8+i-2].getVertical()-jn)==2 & (in-board[(j+1)*8+i-2].getHorizontal())==1) {
                 if (board[(j+1)*8+i-2].isFigure == 1 & board[(j+1)*8+i-2].colorF != board[z].colorF) {
-                    list.add((j+1)*8+i-2);
+                    if (keyR==0){
+                        list.add((j+1)*8+i-2);}
+                    else if(isChahe(board,z,(j+1)*8+i-2,board[z].colorF)==0){
+                        list.add((j+1)*8+i-2);}
                 } else if (board[(j+1)*8+i-2].isFigure == 1 & board[(j+1)*8+i-2].colorF == board[z].colorF) {
                 } else {
-                    list.add((j+1)*8+i-2);
+                    if (keyR==0){
+                        list.add((j+1)*8+i-2);}
+                    else if(isChahe(board,z,(j+1)*8+i-2,board[z].colorF)==0){
+                        list.add((j+1)*8+i-2);}
                 }
             }}
         System.out.println("#6");//
@@ -602,10 +635,16 @@ public class Play2 extends AppCompatActivity {
         if((j*8+i-3)>-1 & (j*8+i-3)<64 ) {
             if ( (board[j*8+i-3].getVertical()-jn)==1 & (in-board[j*8+i-3].getHorizontal())==2) {
                 if (board[j*8+i-3].isFigure == 1 & board[j*8+i-3].colorF != board[z].colorF) {
-                    list.add(j*8+i-3);
+                    if (keyR==0){
+                        list.add(j*8+i-3);}
+                    else if(isChahe(board,z,j*8+i-3,board[z].colorF)==0){
+                        list.add(j*8+i-3);}
                 } else if (board[j*8+i-3].isFigure == 1 & board[j*8+i-3].colorF == board[z].colorF) {
                 } else {
-                    list.add(j*8+i-3);
+                    if (keyR==0){
+                        list.add(j*8+i-3);}
+                    else if(isChahe(board,z,j*8+i-3,board[z].colorF)==0){
+                        list.add(j*8+i-3);}
                 }
             }}
         System.out.println("#7");//
@@ -613,10 +652,16 @@ public class Play2 extends AppCompatActivity {
         if(((j-2)*8+i-3)>-1 & ((j-2)*8+i-3)<64 ) {
             if ( (jn-board[(j-2)*8+i-3].getVertical())==1 & (in-board[(j-2)*8+i-3].getHorizontal())==2) {
                 if (board[(j-2)*8+i-3].isFigure == 1 & board[(j-2)*8+i-3].colorF != board[z].colorF) {
-                    list.add((j-2)*8+i-3);
+                    if (keyR==0){
+                        list.add((j-2)*8+i-3);}
+                    else if(isChahe(board,z,(j-2)*8+i-3,board[z].colorF)==0){
+                        list.add((j-2)*8+i-3);}
                 } else if (board[(j-2)*8+i-3].isFigure == 1 & board[(j-2)*8+i-3].colorF == board[z].colorF) {
                 } else {
-                    list.add((j-2)*8+i-3);
+                    if (keyR==0){
+                        list.add((j-2)*8+i-3);}
+                    else if(isChahe(board,z,(j-2)*8+i-3,board[z].colorF)==0){
+                        list.add((j-2)*8+i-3);}
                 }
             }}
         System.out.println("#8");//
@@ -624,10 +669,16 @@ public class Play2 extends AppCompatActivity {
         if(((j-3)*8+i-2)>-1 & ((j-3)*8+i-2)<64 ) {
             if ( (jn-board[(j-3)*8+i-2].getVertical())==2 & (in-board[(j-3)*8+i-2].getHorizontal())==1) {
                 if (board[(j-3)*8+i-2].isFigure == 1 & board[(j-3)*8+i-2].colorF != board[z].colorF) {
-                    list.add((j-3)*8+i-2);
+                    if (keyR==0){
+                        list.add((j-3)*8+i-2);}
+                    else if(isChahe(board,z,(j-3)*8+i-2,board[z].colorF)==0){
+                        list.add((j-3)*8+i-2);}
                 } else if (board[(j-3)*8+i-2].isFigure == 1 & board[(j-3)*8+i-2].colorF == board[z].colorF) {
                 } else {
-                    list.add((j-3)*8+i-2);
+                    if (keyR==0){
+                        list.add((j-3)*8+i-2);}
+                    else if(isChahe(board,z,(j-3)*8+i-2,board[z].colorF)==0){
+                        list.add((j-3)*8+i-2);}
                 }
             }
 
@@ -647,12 +698,18 @@ public class Play2 extends AppCompatActivity {
             if( i==8|| j==8){break;}
             if((j*8+i)>-1 & (j*8+i)<64) {
                 if (board[j*8+i].isFigure == 1 & board[j*8+i].colorF != board[z].colorF) {
-                    list.add(j*8+i);
+                    if (keyR==0){
+                        list.add(j*8+i);}
+                    else if(isChahe(board,z,j*8+i,board[z].colorF)==0){
+                        list.add(j*8+i);}
                     break;
                 } else if (board[j*8+i].isFigure == 1 & board[j*8+i].colorF == board[z].colorF) {
                     break;
                 } else {
-                    list.add(j*8+i);
+                    if (keyR==0){
+                        list.add(j*8+i);}
+                    else if(isChahe(board,z,j*8+i,board[z].colorF)==0){
+                        list.add(j*8+i);}
                 }
                 j = j + 1;
                 i = i + 1;
@@ -671,12 +728,19 @@ public class Play2 extends AppCompatActivity {
             if( i==1|| j==1){break;}
             if(((j-2)*8+i-2)>-1 & ((j-2)*8+i-2)<64 ) {
                 if (board[(j-2)*8+i-2].isFigure == 1 & board[(j-2)*8+i-2].colorF != board[z].colorF) {
-                    list.add((j-2)*8+i-2);
+                    if (keyR==0){
+                        list.add((j-2)*8+i-2);}
+                    else if(isChahe(board,z,(j-2)*8+i-2,board[z].colorF)==0){
+                        list.add((j-2)*8+i-2);}
                     break;
                 } else if (board[(j-2)*8+i-2].isFigure == 1 & board[(j-2)*8+i-2].colorF == board[z].colorF) {
                     break;
                 } else {
-                    list.add((j-2)*8+i-2);
+                    if (keyR==0){
+                        list.add((j-2)*8+i-2);}
+                    else if(isChahe(board,z,(j-2)*8+i-2,board[z].colorF)==0){
+                        list.add((j-2)*8+i-2);}
+
                 }
                 j = j - 1;
                 i = i - 1;
@@ -695,12 +759,18 @@ public class Play2 extends AppCompatActivity {
             if( i==8|| j==1){break;}
             if(((j-2)*8+i)>-1 & ((j-2)*8+i)<64) {
                 if (board[(j-2)*8+i].isFigure == 1 & board[(j-2)*8+i].colorF != board[z].colorF) {
-                    list.add((j-2)*8+i);
+                    if (keyR==0){
+                        list.add((j-2)*8+i);}
+                    else if(isChahe(board,z,(j-2)*8+i,board[z].colorF)==0){
+                        list.add((j-2)*8+i);}
                     break;
                 } else if (board[(j-2)*8+i].isFigure == 1 & board[(j-2)*8+i].colorF == board[z].colorF) {
                     break;
                 } else {
-                    list.add((j-2)*8+i);
+                    if (keyR==0){
+                        list.add((j-2)*8+i);}
+                    else if(isChahe(board,z,(j-2)*8+i,board[z].colorF)==0){
+                        list.add((j-2)*8+i);}
                 }
                 i = i + 1;
                 j = j - 1;
@@ -718,14 +788,20 @@ public class Play2 extends AppCompatActivity {
             if( i==1|| j==8){break;}
             if((j*8+i-2)>-1 & (j*8+i-2)<64) {
                 if(board[j*8+i-2].isFigure==1 & board[j*8+i-2].colorF!=board[z].colorF){
-                    list.add(j*8+i-2);
+                    if (keyR==0){
+                        list.add(j*8+i-2);}
+                    else if(isChahe(board,z,j*8+i-2,board[z].colorF)==0){
+                        list.add(j*8+i-2);}
                     break;
                 }
                 else if(board[j*8+i-2].isFigure==1 & board[j*8+i-2].colorF==board[z].colorF){
                     break;
                 }
                 else{
-                    list.add(j*8+i-2);
+                    if (keyR==0){
+                        list.add(j*8+i-2);}
+                    else if(isChahe(board,z,j*8+i-2,board[z].colorF)==0){
+                        list.add(j*8+i-2);}
                 }
                 i=i-1;
                 j=j+1;
@@ -741,17 +817,21 @@ public class Play2 extends AppCompatActivity {
     public int isChahe(cell[] board,int Nfield,int Wfield,int color){//Nfield(now Field) текущее поле на котором стоит фигура Wfield(will field) поле куда хочит пойти игрок
         int key=0;
         int buferWfield=board[Wfield].isFigure;
-        int buferWfieldColor=board[Wfield].color;
+        int buferWfieldColor=board[Wfield].colorF;
         if( board[Nfield].nameF=="Король"){
-            if (color==1){GeoOfBKing=Wfield;}
-            else{GeoOfWKing=Wfield;}
+            board[Nfield].nameF="";
+            if (color == 1){
+                GeoOfBKing=Wfield;}
+            else{
+                GeoOfWKing=Wfield;}
             key=1;
 
         }
 
+        System.out.println("buferWfield "+buferWfield+" buferWfieldColor "+buferWfieldColor+" board[Nfield].nameF "+board[Nfield].nameF+" GeoOfWKing "+GeoOfWKing);
         board[Nfield].isFigure=0;
         board[Wfield].isFigure=1;
-        board[Wfield].color=color;
+        board[Wfield].colorF=color;
         int Geo=0;
         if(color==0){ Geo=GeoOfWKing;}
         else{ Geo=GeoOfBKing;}
@@ -759,24 +839,30 @@ public class Play2 extends AppCompatActivity {
         if(Shah(moveFlag,list).indexOf(Geo)==-1){
             board[Nfield].isFigure=1;
             board[Wfield].isFigure=buferWfield;
-            board[Wfield].color=buferWfieldColor;
+            board[Wfield].colorF=buferWfieldColor;
             if (key==1){
                 key=0;
                 if (color==1){GeoOfBKing=Nfield;}
                 else{GeoOfWKing=Nfield;}
+                board[Nfield].nameF="Король";
             }
 
             System.out.println("Шаха нет");
+
             return 0;//шаха нет
         }
+
+
+
         else{
             board[Nfield].isFigure=1;
             board[Wfield].isFigure=buferWfield;
-            board[Wfield].color=buferWfieldColor;
+            board[Wfield].colorF=buferWfieldColor;
             if (key==1){
                 key=0;
                 if (color==1){GeoOfBKing=Nfield;}
                 else{GeoOfWKing=Nfield;}
+                board[Nfield].nameF="Король";
             }
             System.out.println("Шах "+" Позиция Короля "+Geo+" Начальная клетка: "+Nfield+" Конечная позиция "+Wfield+"массив битых полей"+Shah(moveFlag,list));
 
@@ -835,6 +921,7 @@ public class Play2 extends AppCompatActivity {
     }
 
     public ArrayList Shah(int moveFlag,ArrayList list){//массив битых полей расчитан для полей которые бьет противник
+        keyR=0;
         ChaheKey=1;
         ArrayList<Integer> Clist = new ArrayList<>();
         Clist.addAll(list);//cохранили массив возможных ходов в Clist
@@ -879,27 +966,27 @@ public class Play2 extends AppCompatActivity {
                     System.out.println("массив полсе пешки"+list);*/
                 }
                 else if(board[ChaheQ].nameF=="Слон"){
-                    System.out.println("---------------------------------------СЛОН проверка---------------------------------");
+                    //System.out.println("---------------------------------------СЛОН проверка---------------------------------");
                     bishop(board);
                     System.out.println("массив полсе слона"+list);
                 }
                 else if(board[ChaheQ].nameF=="Ферзь"){
-                    System.out.println("---------------------------------------Ферзь проверка---------------------------------");
+                    //System.out.println("---------------------------------------Ферзь проверка---------------------------------");
                     queen(board);
                     System.out.println("массив полсе ферзя"+list);
                 }
                 else if(board[ChaheQ].nameF=="Король"){
-                    System.out.println("---------------------------------------Король проверка---------------------------------");
+                    //System.out.println("---------------------------------------Король проверка---------------------------------");
                     king(board);
                     System.out.println("массив полсе короля"+list);
                 }
                 else if(board[ChaheQ].nameF=="Конь"){
-                    System.out.println("---------------------------------------Конь проверка---------------------------------");
+                    //System.out.println("---------------------------------------Конь проверка---------------------------------");
                     knight(board);
                     System.out.println("массив полсе коня"+list);
                 }
                 else if(board[ChaheQ].nameF=="Ладья"){
-                    System.out.println("---------------------------------------Ладья проверка---------------------------------");
+                    //System.out.println("---------------------------------------Ладья проверка---------------------------------");
                     rook(board);
                     System.out.println("массив полсе ладьи"+list);
                 }
@@ -909,7 +996,7 @@ public class Play2 extends AppCompatActivity {
         list.clear();
         list.addAll(Clist);
         ChaheKey=0;
-
+        keyR=1;
         return bufer;
     }
     public int toPx(int valueInDp ){
@@ -930,25 +1017,16 @@ public class Play2 extends AppCompatActivity {
             textView=findViewById(R.id.textView);
             textView.setText("эта фигура:"+board[fIdOfButton].nameF);
             textView.setText("эта фигура:"+board[fIdOfButton].getidF());
-
+            keyR=1;
 
 
             if(board[fIdOfButton].isFigure==1 & board[fIdOfButton].colorF==moveFlag){//если есть фигура на этом поле и ход этого игрока,то:
                 if(board[fIdOfButton].nameF=="Пешка"){//если эта фигура пешка
                     textView=findViewById(R.id.textView);
-                    //textView.setText("эта фигура пешка");
-                    //textView.setText(""+board[fIdOfButton].getidF());
-                    textView.setText(idOfButton);
-                    textView.setText(idOfButton);
                     pawn(board);
-
-
-
-
-
                     textView=findViewById(R.id.textView);
 
-                    //textView.setText(list.get(0).toString());
+
 
                 }
                 if(board[fIdOfButton].nameF=="Ладья"){//если эта фигура ладья
