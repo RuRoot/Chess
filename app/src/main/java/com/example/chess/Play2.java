@@ -239,6 +239,21 @@ public class Play2 extends AppCompatActivity {
     String idOfImage;
     public int[] img = new int[]{R.id.imageView0,R.id.imageView1,R.id.imageView2,R.id.imageView3,R.id.imageView4,R.id.imageView5,R.id.imageView6,R.id.imageView7,R.id.imageView8,R.id.imageView9,R.id.imageView10,R.id.imageView11,R.id.imageView12,R.id.imageView13,R.id.imageView14,R.id.imageView15,R.id.imageView48,R.id.imageView49,R.id.imageView50,R.id.imageView51,R.id.imageView52,R.id.imageView53,R.id.imageView54,R.id.imageView55,R.id.imageView56,R.id.imageView57,R.id.imageView58,R.id.imageView59,R.id.imageView60,R.id.imageView61,R.id.imageView62,R.id.imageView63};//массив id
     ImageView imageView;
+    public void graphicChange(){
+
+        imageView = findViewById(img[board[fIdOfButton].getidF()]);
+
+        int valueInDp = 49;
+
+        int px=toPx(valueInDp);
+
+        imageView.setY(imageView.getY() + ((board[fIdOfButton2].getVertical() - board[fIdOfButton].getVertical())) * px);
+
+        imageView.setX(imageView.getX() + ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * px);
+    }
+    public void graphicPromotion(){
+
+    }
     public void change(cell[]board){
 
         list.clear();
@@ -255,6 +270,11 @@ public class Play2 extends AppCompatActivity {
 
             // System.out.println("Позиция черного короля: "+GeoOfBKing+"Позиция белого короля: "+GeoOfWKing);
         }
+        if(fIdOfButton==0){wasMooveRook0=1;}
+        else  if(fIdOfButton==7){wasMooveRook7=1;}
+        else if(fIdOfButton==56){wasMooveRook56=1;}
+        else if(fIdOfButton==63){wasMooveRook63=1;}
+
 
         board[fIdOfButton2].idF=board[fIdOfButton].idF;//в связи с переходом меняем id фигуры на клетке
         board[fIdOfButton].idF=100;
@@ -270,85 +290,105 @@ public class Play2 extends AppCompatActivity {
     }
     public void graphicCastling(){
         change(board);//переставили короля
-        if (moveFlag==0){
-            wasMooveWKing=0;
+        if (moveFlag==1){//если рокировка черные
+            // wasMooveWKing=1; ?
             if(fIdOfButton2<4){fIdOfButton=0;
                 fIdOfButton2=3;}
             else{fIdOfButton=7;
                 fIdOfButton2=5;}
         }
-        else{wasMooveWKing=0;
+        else{ //если рокировка  белые
+            //wasMooveWKing=1;  ?
             if(fIdOfButton2<60){fIdOfButton=56;
                 fIdOfButton2=59;}
             else{fIdOfButton=63;
                 fIdOfButton2=61;}
         }
+        System.out.println(board[fIdOfButton].nameF+" на клетке"+fIdOfButton+" во время рокировки пойдет на "+fIdOfButton2);
+        graphicChange();
         change(board);
+
+
     }
     public void castling(){// расчет возможности рокировки
-        if (moveFlag==1) {
+        System.out.println("-зашел в castling");
+
+        if (moveFlag==1 & Shah().indexOf(GeoOfBKing)==-1 & board[7].nameF=="Ладья") {
             if (wasMooveBKing == 0 & wasMooveRook7 == 0) {
                 int value1 = 1;//если есть фигуры break
                 int value2 = 1;//есть ли шах
-                for (int i = GeoOfBKing; i < 8; i++) {
+                for (int i = GeoOfBKing+1; i < 7; i++) {
                     if (board[i].isFigure == 1) {
+                        System.out.println("()1 мешает фигура");
                         value1 = 0;
                         break;
                     }
-                    if (i < 7 & Shah().indexOf(i) != 0) {
+                    if (i < 7 & Shah().indexOf(i) != -1) {
+                        System.out.println("()1 мешает шах");
                         value2 = 0;
                     }
                 }
                 if (value1 * value2 != 0) {
                     list.add(6);
+                    System.out.println("-добавил№1");
                 }//можно сделать рокировку
+
             }
 
 
-            if (wasMooveBKing == 0 & wasMooveRook0 == 0) {
+            if (wasMooveBKing == 0 & wasMooveRook0 == 0& board[0].nameF=="Ладья") {
                 int value1 = 1;//если есть фигуры break
                 int value2 = 1;//есть ли шах
-                for (int i = GeoOfBKing; i > -1; i--) {
+                for (int i = GeoOfBKing-1; i > 0; i--) {
                     if (board[i].isFigure == 1) {
+                        System.out.println("()2 мешает фигура");
                         value1 = 0;
                         break;
                     }
-                    if (i > 1 & Shah().indexOf(i) != 0) {
+                    if (i > 1 & Shah().indexOf(i) != -1) {
+                        System.out.println("()2 мешает шах");
                         value2 = 0;
                     }
                 }
                 if (value1 * value2 != 0) {
                     list.add(2);
+                    System.out.println("-добавил№2");
                 }//можно сделать рокировку
             }
         }
-        else{
-            if(wasMooveWKing == 0 & wasMooveRook63 == 0){
+        else if( Shah().indexOf(GeoOfWKing)==-1){
+            if(wasMooveWKing == 0 & wasMooveRook63 == 0 & board[63].nameF=="Ладья"){
                 int value1 = 1;//если есть фигуры break
                 int value2 = 1;//есть ли шах
-                for(int i=GeoOfWKing;i<64;i++){
+                for(int i=GeoOfWKing+1;i<63;i++){
                     if (board[i].isFigure == 1){
+                        System.out.println("()3 мешает фигура");
                         value1=0;
                         break;}
-                    if (i < 63 & Shah().indexOf(i) != 0){
+                    if (i < 63 & Shah().indexOf(i) != -1){
+                        System.out.println("()3 мешает шах");
                         value2 = 0;
                     }
                 }
-                if (value1*value2!=0){list.add(62);}//можно сделать рокировку
+                if (value1*value2!=0){list.add(62);
+                    System.out.println("-добавил№3");}//можно сделать рокировку
             }
 
-            if(wasMooveWKing == 0 & wasMooveRook56 == 0){
+            if(wasMooveWKing == 0 & wasMooveRook56 == 0& board[56].nameF=="Ладья"){
                 int value1 = 1;//если есть фигуры break
                 int value2 = 1;//есть ли шах
-                for(int i=GeoOfWKing;i>55;i--){
+                for(int i=GeoOfWKing-1;i>56;i--){
                     if (board[i].isFigure == 1){
+                        System.out.println("()4 мешает фигура");
                         value1=0;
                         break;}
-                    if (i > 57 & Shah().indexOf(i) != 0){
+                    if (i > 57 & Shah().indexOf(i) != -1){
+                        System.out.println("()4 мешает шах");
                         value2 = 0;
                     }
                 }
-                if (value1*value2!=0){list.add(58);}//можно сделать рокировку
+                if (value1*value2!=0){list.add(58);
+                    System.out.println("-добавил№4");}//можно сделать рокировку
             }}
 
     }
@@ -1391,37 +1431,10 @@ public class Play2 extends AppCompatActivity {
             // textView=findViewById(R.id.textView);
 
 
-            imageView = findViewById(img[board[fIdOfButton].getidF()]);
-            //System.out.println("Текущее расположение дел:" + " id кнопки которая была нажата сначала: " + fIdOfButton + " id кнопки которая была нажата потом: " + fIdOfButton2 + " индекс изображения в массиве id изоброжения " + board[fIdOfButton].getidF());
-            // textView = findViewById(R.id.textView);
-            //textView.setText("" + board[fIdOfButton].getidF());
-            //textView.setText(""+fIdOfButton);
-            // textView = findViewById(R.id.textView);
-            //textView.setText(imageView.getLeft()+" "+imageView.getRight()+" "+imageView.getHeight() );
-            int valueInDp = 49;
-            /* int valueInPx = (int) TypedValue.applyDimension(
-                     TypedValue.COMPLEX_UNIT_DIP, valueInDp, getResources().getDisplayMetrics());*/
-            int px=toPx(valueInDp);
-            //System.out.println("valueInPx:"+valueInPx+" imageView.getY():"+imageView.getY()+" imageView.getX():"+imageView.getX()+" (board[fIdOfButton2].getVertical()-board[fIdOfButton].getVertical())"+board[fIdOfButton2].getVertical()+","+board[fIdOfButton].getVertical());
-            //if(board[fIdOfButton].nameF=="Слон"){
-            // imageView.setVisibility(View.VISIBLE);
-            //imageView.setY(imageView.getY()+46);
-            //imageView.setX(imageView.getX() + ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * valueInPx);
-
-            // else {
-            imageView.setY(imageView.getY() + ((board[fIdOfButton2].getVertical() - board[fIdOfButton].getVertical())) * px);
-
-            //System.out.println("текущий y:" + imageView.getY() + " 2 часть:" + ((board[fIdOfButton2].getVertical() - board[fIdOfButton].getVertical())) * px);
-            imageView.setX(imageView.getX() + ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * px);
-             /*imageView.setImageResource(R.drawable.black_bishop);
-             imageView.setMaxHeight(49 );*/
-            //System.out.println("текущий х:" + imageView.getX() + " 2часть:" + ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * px);
-            //}
-            //String a="типо перемещение";
-            //textView=findViewById(R.id.textView);`
-            //textView.setText("типо перемещение");
+            graphicChange();
             list.clear();//очищаем список возможных ходов
             if (board[fIdOfButton].nameF=="Король" & Math.abs(fIdOfButton-fIdOfButton2)==2){
+
                 graphicCastling();
 
             }
