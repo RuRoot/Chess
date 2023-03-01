@@ -204,7 +204,7 @@ public class Play2 extends AppCompatActivity {
             else {
                 board[i].idF=100;
             }
-            System.out.println("id фигуры:"+board[i].getidF()+"цвет:"+board[i].color+" вертикаль:"+board[i].vertical+" горизонталь:"+board[i].horizontal+" есть ли фигура:"+board[i].isFigure+" название фигуры:"+board[i].nameF+" цвет фигуры:"+board[i].colorF);
+            //System.out.println("id фигуры:"+board[i].getidF()+"цвет:"+board[i].color+" вертикаль:"+board[i].vertical+" горизонталь:"+board[i].horizontal+" есть ли фигура:"+board[i].isFigure+" название фигуры:"+board[i].nameF+" цвет фигуры:"+board[i].colorF);
 
 
 
@@ -223,23 +223,24 @@ public class Play2 extends AppCompatActivity {
     ImageButton imageButton;
     int GeoOfBKing=4;//позиция черногго короля
     int GeoOfWKing=60;//позиция белого короля
-    int ChaheKey=0;//ключ шах(1)/ход(0)
+    int ChaheKey=0;//ключ шах(1)/ход(0)   при 1 запускаеться фор
     int ChaheQ=0;//имитируем нажатие на кнопку для расчета возможных ходов и битых полей
     int keyR=1;//0- только Shah(для противника) 1- только isChahe(для себя,не открываем короля)
-
+    // int testing=0;//создана переменная для тестировки 0-заход через Pat 1-заход через фигуру 2-заход через Chahe
     String idOfImage;
     public int[] img = new int[]{R.id.imageView0,R.id.imageView1,R.id.imageView2,R.id.imageView3,R.id.imageView4,R.id.imageView5,R.id.imageView6,R.id.imageView7,R.id.imageView8,R.id.imageView9,R.id.imageView10,R.id.imageView11,R.id.imageView12,R.id.imageView13,R.id.imageView14,R.id.imageView15,R.id.imageView48,R.id.imageView49,R.id.imageView50,R.id.imageView51,R.id.imageView52,R.id.imageView53,R.id.imageView54,R.id.imageView55,R.id.imageView56,R.id.imageView57,R.id.imageView58,R.id.imageView59,R.id.imageView60,R.id.imageView61,R.id.imageView62,R.id.imageView63};//массив id
     ImageView imageView;
     public void change(cell[]board){
+        list.clear();
         if(board[fIdOfButton2].isFigure==1){
-            // System.out.println("тут есть фигура");
+            //System.out.println("тут есть фигура");
             imageView=findViewById(img[board[fIdOfButton2].getidF()]);
             // System.out.println("fIdOfButton2:"+fIdOfButton2);
             imageView.setVisibility(View.INVISIBLE);}
         if(board[fIdOfButton].nameF=="Король"){
             if(board[fIdOfButton].colorF==1){GeoOfBKing=fIdOfButton2;}
             else{GeoOfWKing=fIdOfButton2;}
-            //System.out.println("Позиция черного короля: "+GeoOfBKing+"Позиция белого короля: "+GeoOfWKing);
+            // System.out.println("Позиция черного короля: "+GeoOfBKing+"Позиция белого короля: "+GeoOfWKing);
         }
 
         board[fIdOfButton2].idF=board[fIdOfButton].idF;//в связи с переходом меняем id фигуры на клетке
@@ -257,27 +258,34 @@ public class Play2 extends AppCompatActivity {
 
 
     public  void pawn(cell[]board) {
-        System.out.println("PAWN ChaheQ in"+ChaheQ);
+        // System.out.println("Контроль вход pawn "+keyR);
         int z=fIdOfButton;
-        if(ChaheKey==1){z=ChaheQ;
-            // System.out.println("Зашел в пешку проверка для PAT");
-        }
+        if(ChaheKey==1){z=ChaheQ;}
         if (board[z].colorF == 1) {//если пешка чёрная
             if (board[z + 8].isFigure == 0  & (isChahe(board,z,z + 8,board[z].colorF)==0)) {
-
+                // System.out.println("z + 8 "+z + 8);
                 list.add(z + 8);//добаляем ход вперед на 1 клетку
             }
             if (board[z].getVertical() == 2){
                 if ( board[z + 8].isFigure == 0 & board[z + 16].isFigure == 0& (isChahe(board,z,z + 16,board[z].colorF)==0)) {
+                    // System.out.println("z + 16 "+z + 16);
                     list.add(z + 16);//добаляем ход вперед на 2 клетки
                 }
             }
-            if (z+9<=63){//взятие
-                if (board[z + 9].getVertical() - board[z].getVertical() == 1 & (board[z + 9].isFigure == 1||ChaheKey==1)& (isChahe(board,z,z + 9,board[z].colorF)==0)) {
+            if ((z+9<=63)&(board[z + 9].getVertical() - board[z].getVertical() == 1)){//взятие
+                if (keyR==0){
+                    // System. out.println("1-z + 9 "+z + 9);
+                    list.add(z + 9);}
+                else if((board[z + 9].isFigure == 1)& (isChahe(board,z,z + 9,board[z].colorF)==0)){
+                    // System.out.println("2-z + 9 "+z + 9);
                     list.add(z + 9);
                 }}
-            if(z + 7 <= 63 ){//взятие
-                if (board[z + 7].getVertical() - board[z].getVertical() == 1 &( board[z + 7].isFigure == 1||ChaheKey==1)& (isChahe(board,z,z + 7,board[z].colorF)==0)) {
+            if ((z+7<=63)&(board[z + 7].getVertical() - board[z].getVertical() == 1)){//взятие
+                if (keyR==0){
+                    //System.out.println("1-z + 7 "+z + 7);
+                    list.add(z + 7);}
+                else if((board[z + 7].isFigure == 1)& (isChahe(board,z,z + 7,board[z].colorF)==0)){
+                    // System.out.println("2-z + 7 "+z + 7);
                     list.add(z + 7);
                 }}
         }
@@ -292,17 +300,19 @@ public class Play2 extends AppCompatActivity {
                     list.add(z - 16);//добаляем ход вперед на 2 клетки
                 }
             }
-            if(z- 9 >= 0){//взятие
-                if ( board[z- 9].getVertical() - board[z].getVertical() == -1 & (board[z - 9].isFigure == 1 ||ChaheKey==1)& (isChahe(board,z,z - 9,board[z].colorF)==0)) {
+            if ((z-9<=63)&(board[z - 9].getVertical() - board[z].getVertical() == 1)){//взятие
+                if (keyR==0){list.add(z - 9);}
+                else if((board[z - 9].isFigure == 1)& (isChahe(board,z,z - 9,board[z].colorF)==0)){
                     list.add(z - 9);
                 }}
-            if(z - 7 >= 0){//взятие
-                if (board[z - 7].getVertical() - board[z].getVertical() == -1 & (board[z - 7].isFigure == 1||ChaheKey==1)& (isChahe(board,z,z - 7,board[z].colorF)==0)) {
+            if ((z-7<=63)&(board[z - 7].getVertical() - board[z].getVertical() == 1)){//взятие
+                if (keyR==0){list.add(z - 7);}
+                else if((board[z - 7].isFigure == 1)& (isChahe(board,z,z - 7,board[z].colorF)==0)){
                     list.add(z - 7);
                 }}
         }
-        System.out.println("Пешка возможные ходы "+ list+" ChaheQ "+ChaheQ+" GeoOfWking "+GeoOfWKing+" GeoOfBking "+GeoOfBKing+" keyR "+keyR+" MoveFlag "+moveFlag+" ChaheKey "+ChaheKey+" fIdofbutton "+fIdOfButton);
-        System.out.println("PAWN ChaheQ out"+ChaheQ);
+        // System.out.println("Контроль выход pawn "+keyR);
+
     }
 
     public  void king(cell[]board) {//Король
@@ -314,8 +324,8 @@ public class Play2 extends AppCompatActivity {
         int i=in;
 
 
-        System.out.println("#1");//вниз
-        System.out.println("Король i:"+i+" j:"+j+" j*8+i-1:"+(j*8+i-1));
+        //System.out.println("#1");//вниз
+        // System.out.println("Король i:"+i+" j:"+j+" j*8+i-1:"+(j*8+i-1));
         if((j*8+i-1)>-1 & (j*8+i-1)<64) {
             if ((board[j*8+i-1].isFigure == 1)  & (board[j*8+i-1].colorF != board[z].colorF) || (board[j*8+i-1].isFigure == 0)){
                 if (keyR==0){
@@ -327,8 +337,8 @@ public class Play2 extends AppCompatActivity {
 
 
 
-        System.out.println("#2"); //вверх
-        System.out.println("Король i:"+i+" j:"+j+" (j-2)*8+i-1:"+((j-2)*8+i-1));
+        // System.out.println("#2"); //вверх
+        // System.out.println("Король i:"+i+" j:"+j+" (j-2)*8+i-1:"+((j-2)*8+i-1));
         if(((j-2)*8+i-1)>-1 & ((j-2)*8+i-1)<64) {
             if ((board[(j - 2) * 8 + i - 1].isFigure == 1)  & (board[(j - 2) * 8 + i - 1].colorF != board[z].colorF) || (board[(j - 2) * 8 + i - 1].isFigure == 0)){
                 if (keyR==0){
@@ -340,8 +350,8 @@ public class Play2 extends AppCompatActivity {
 
 
 
-        System.out.println("#3");//вправо
-        System.out.println("Король i:"+i+" j:"+j+" (j-1)*8+i:"+((j-1)*8+i));
+        //System.out.println("#3");//вправо
+        // System.out.println("Король i:"+i+" j:"+j+" (j-1)*8+i:"+((j-1)*8+i));
         if(((j-1)*8+i)>-1 & ((j-1)*8+i)<64) {
             if ((board[(j-1)*8+i].isFigure == 1)  & (board[(j-1)*8+i].colorF != board[z].colorF) || (board[(j-1)*8+i].isFigure == 0)){
                 if (keyR==0){
@@ -352,8 +362,8 @@ public class Play2 extends AppCompatActivity {
         }
 
 
-        System.out.println("#4"); //влево
-        System.out.println("Король i:"+i+" j:"+j+" (j-1)*8+i-2:"+((j-1)*8+i-2));
+        // System.out.println("#4"); //влево
+        //System.out.println("Король i:"+i+" j:"+j+" (j-1)*8+i-2:"+((j-1)*8+i-2));
         if(((j-1)*8+i-2)>-1 & ((j-1)*8+i-2)<64) {
             if ((board[(j-1)*8+i-2].isFigure == 1)  & (board[(j-1)*8+i-2].colorF != board[z].colorF) || (board[(j-1)*8+i-2].isFigure == 0)){
                 if (keyR==0){
@@ -365,8 +375,8 @@ public class Play2 extends AppCompatActivity {
 
 
 
-        System.out.println("#5");//вниз+вправо
-        System.out.println("Король i:"+i+" j:"+j+" j*8+i:"+(j*8+i));
+        //System.out.println("#5");//вниз+вправо
+        // System.out.println("Король i:"+i+" j:"+j+" j*8+i:"+(j*8+i));
         if((j*8+i)>-1 & (j*8+i)<64) {
             if ((board[j*8+i].isFigure == 1)  & (board[j*8+i].colorF != board[z].colorF) || (board[j*8+i].isFigure == 0)){
                 if (keyR==0){
@@ -378,8 +388,8 @@ public class Play2 extends AppCompatActivity {
 
 
 
-        System.out.println("#6"); //вверх+влево
-        System.out.println("Король i:"+i+" j:"+j+" (j-2)*8+i-2:"+((j-2)*8+i-2));
+        //System.out.println("#6"); //вверх+влево
+        //System.out.println("Король i:"+i+" j:"+j+" (j-2)*8+i-2:"+((j-2)*8+i-2));
         if(((j-2)*8+i-2)>-1 & ((j-2)*8+i-2)<64 ) {
             if ((board[(j-2)*8+i-2].isFigure == 1)  & (board[(j-2)*8+i-2].colorF != board[z].colorF) || (board[(j-2)*8+i-2].isFigure == 0)){
                 if (keyR==0){
@@ -392,8 +402,8 @@ public class Play2 extends AppCompatActivity {
 
 
 
-        System.out.println("#7");//вверх+вправо
-        System.out.println("Король i:"+i+" j:"+j+" (j-2)*8+i:"+((j-2)*8+i));
+        //System.out.println("#7");//вверх+вправо
+        //System.out.println("Король i:"+i+" j:"+j+" (j-2)*8+i:"+((j-2)*8+i));
         if(((j-2)*8+i)>-1 & ((j-2)*8+i)<64) {
             if ((board[(j-2)*8+i].isFigure == 1)  & (board[(j-2)*8+i].colorF != board[z].colorF) || (board[(j-2)*8+i].isFigure == 0)){
                 if (keyR==0){
@@ -404,8 +414,8 @@ public class Play2 extends AppCompatActivity {
         }
 
 
-        System.out.println("#8"); //вниз+влево
-        System.out.println("Король i:"+i+" j:"+j+" j*8+i-2:"+(j*8+i-2));
+        //System.out.println("#8"); //вниз+влево
+        //System.out.println("Король i:"+i+" j:"+j+" j*8+i-2:"+(j*8+i-2));
         if((j*8+i-2)>-1 & (j*8+i-2)<64) {
             if ((board[j*8+i-2].isFigure == 1)  & (board[j*8+i-2].colorF != board[z].colorF) || (board[j*8+i-2].isFigure == 0)){
                 if (keyR==0){
@@ -417,30 +427,45 @@ public class Play2 extends AppCompatActivity {
     }
 
     public  void rook(cell[]board) {//Ладья
+
         int z=fIdOfButton;
         if(ChaheKey==1){z=ChaheQ;}
         int in=board[z].getHorizontal();
         int jn=board[z].getVertical();
         int j=jn;
         int i=in;
+        //if (keyR==0){i
+        //System.out.println("Находимся в Shah");}
         //System.out.println(list);
 
-        System.out.println("#1");//вниз
+        // System.out.println("#1");//вниз
         while(j!=8){
-            System.out.println("Ладья i:"+i+" j:"+j+" j*8+i-1:"+(j*8+i-1));
+            //System.out.println("Л  j*8+i-1"+(j*8+i-1)+" KeyR "+keyR);
+            // System.out.println("Ладья i:"+i+" j:"+j+" j*8+i-1:"+(j*8+i-1));
+            System.out.println("List после "+j+" цикла "+list);
             if((j*8+i-1)>-1 & (j*8+i-1)<64) {
+
                 if (board[j * 8 + i - 1].isFigure == 1 & board[j * 8 + i - 1].colorF != board[z].colorF) {
+
                     if (keyR==0){
+
                         list.add(j*8+i-1);}
                     else if(isChahe(board,z,j*8+i-1,board[z].colorF)==0){
+
                         list.add(j*8+i-1);}
+                    System.out.println("цикл закончен из за того что на этой клетке стоит не дружественная фигура , текущая клетка "+(j*8+i-1)+"на клетке стоит "+board[j*8+i-1].nameF+" цвет фигуры "+board[j*8+i-1].colorF);
                     break;}
                 else if (board[j * 8 + i - 1].isFigure == 1 & board[j * 8 + i - 1].colorF == board[z].colorF) {
+                    System.out.println("цикл закончен из за того что на этой клетке стоит  дружественная фигура , текущая клетка "+(j*8+i-1)+"на клетке стоит "+board[j*8+i-1].nameF+" цвет фигуры "+board[j*8+i-1].colorF);
+                    //System.out.println("тут своя фигура дальше не иду "+"Сообщение выведено для ладьи на клетке "+z+"Не могу пойти на "+"j * 8 + i - 1"+"потому что там стоит фигура цвета"+board[j * 8 + i - 1].colorF+"А мой цвет "+board[z].colorF);
                     break;}
                 else {
+
                     if (keyR==0){
+
                         list.add(j*8+i-1);}
                     else if(isChahe(board,z,j*8+i-1,board[z].colorF)==0){
+
                         list.add(j*8+i-1);}
                 }
                 j = j + 1;
@@ -448,16 +473,20 @@ public class Play2 extends AppCompatActivity {
 
 
             else{
+
+                System.out.println("цикл закончен из за конца перебора , текущая клетка "+(j*8+i-1));
                 break;
             }
+
         }
+
         j=jn;
         i=in;
-        System.out.println(list);
+        // System.out.println(list);
 
-        System.out.println("#2"); //вверх
+        //System.out.println("#2"); //вверх
         while(j!=1){
-            System.out.println("Ладья i:"+i+" j:"+j+" (j-2)*8+i-1:"+((j-2)*8+i-1));
+            //  System.out.println("Ладья i:"+i+" j:"+j+" (j-2)*8+i-1:"+((j-2)*8+i-1));
             if(((j-2)*8+i-1)>-1 & ((j-2)*8+i-1)<64) {
                 if (board[(j - 2) * 8 + i - 1].isFigure == 1 & board[(j - 2) * 8 + i - 1].colorF != board[z].colorF) {
                     if (keyR==0){
@@ -483,9 +512,9 @@ public class Play2 extends AppCompatActivity {
         i=in;
         //System.out.println(list);
 
-        System.out.println("#3");//вправо
+        //System.out.println("#3");//вправо
         while(i!=8){
-            System.out.println("Ладья i:"+i+" j:"+j+" (j-1)*8+i:"+((j-1)*8+i));
+            //   System.out.println("Ладья i:"+i+" j:"+j+" (j-1)*8+i:"+((j-1)*8+i));
             if(((j-1)*8+i)>-1 & ((j-1)*8+i)<64) {
                 if (board[(j-1)*8+i].isFigure == 1 & board[(j-1)*8+i].colorF != board[z].colorF) {
                     if (keyR==0){
@@ -508,11 +537,10 @@ public class Play2 extends AppCompatActivity {
         }
         j=jn;
         i=in;
-        //System.out.println(list);
-
-        System.out.println("#4"); //влево
+        // System.out.println(list);
+        //System.out.println("#4"); //влево
         while(i!=1){
-            System.out.println("Ладья i:"+i+" j:"+j+" (j-1)*8+i-2:"+((j-1)*8+i-2));
+            //  System.out.println("Ладья i:"+i+" j:"+j+" (j-1)*8+i-2:"+((j-1)*8+i-2));
             if(((j-1)*8+i-2)>-1 & ((j-1)*8+i-2)<64) {
                 if(board[(j-1)*8+i-2].isFigure==1 & board[(j-1)*8+i-2].colorF!=board[z].colorF){
                     if (keyR==0){
@@ -533,9 +561,8 @@ public class Play2 extends AppCompatActivity {
                 i=i-1;}
             else{
                 break;}
-
         }
-        System.out.println("Ладья возможные ходы "+ list+" ChaheQ "+ChaheQ+" GeoOfWking "+GeoOfWKing+" GeoOfBking "+GeoOfBKing+" keyR "+keyR+" MoveFlag "+moveFlag+" ChaheKey "+ChaheKey+" fIdofbutton "+fIdOfButton);
+        System.out.println("Эта "+board[z].nameF+" находится на z="+z+" ChaheQ "+ChaheQ+" ChaheKey "+ChaheKey+ " KeyR "+keyR+" цвет этой ладьи "+board[z].colorF);
     }
 
     public  void knight(cell[]board) {//Конь
@@ -545,10 +572,10 @@ public class Play2 extends AppCompatActivity {
         int jn=board[z].getVertical();
         int j=jn;
         int i=in;
-        System.out.println(list);
+        //System.out.println(list);
 
-        System.out.println("#1");//
-        System.out.println("Конь i:"+i+" j:"+j+" (j-3)*8+i:"+((j-3)*8+i));
+        //System.out.println("#1");//
+        // System.out.println("Конь i:"+i+" j:"+j+" (j-3)*8+i:"+((j-3)*8+i));
         if(((j-3)*8+i)>-1 & ((j-3)*8+i)<64) {
             if ((jn - board[(j - 3) * 8 + i].getVertical()) == 2 & (board[(j - 3) * 8 + i].getHorizontal() - in) == 1) {
 
@@ -567,8 +594,8 @@ public class Play2 extends AppCompatActivity {
                 }
             }
         }
-        System.out.println("#2");//
-        System.out.println("Конь i:"+i+" j:"+j+" (j-2)*8+i+1:"+(j-2)*8+i+1);
+        //System.out.println("#2");//
+        //System.out.println("Конь i:"+i+" j:"+j+" (j-2)*8+i+1:"+(j-2)*8+i+1);
         if(((j-2)*8+i+1)>-1 & ((j-2)*8+i+1)<64 ) {
             if ((jn-board[(j-2)*8+i+1].getVertical())==1 & (board[(j-2)*8+i+1].getHorizontal()-in)==2) {
                 if (board[(j-2)*8+i+1].isFigure == 1 & board[(j-2)*8+i+1].colorF != board[z].colorF) {
@@ -584,8 +611,8 @@ public class Play2 extends AppCompatActivity {
                         list.add((j-2)*8+i+1);}
                 }
             }}
-        System.out.println("#3");//
-        System.out.println("Конь i:"+i+" j:"+j+" j*8+i+1:"+j*8+i+1);
+        // System.out.println("#3");//
+        //System.out.println("Конь i:"+i+" j:"+j+" j*8+i+1:"+j*8+i+1);
         if((j*8+i+1)>-1 & (j*8+i+1)<64 ) {
             if ( (board[j*8+i+1].getVertical()-jn)==1 & (board[j*8+i+1].getHorizontal()-in)==2) {
                 if (board[j*8+i+1].isFigure == 1 & board[j*8+i+1].colorF != board[z].colorF ) {
@@ -601,8 +628,8 @@ public class Play2 extends AppCompatActivity {
                         list.add(j*8+i+1);}
                 }
             }}
-        System.out.println("#4");//
-        System.out.println("Конь i:"+i+" j:"+j+" (j+1)*8+i:"+(j+1)*8+i);
+        // System.out.println("#4");//
+        // System.out.println("Конь i:"+i+" j:"+j+" (j+1)*8+i:"+(j+1)*8+i);
         if(((j+1)*8+i)>-1 & ((j+1)*8+i)<64 ) {
             if ( (board[(j+1)*8+i].getVertical()-jn)==2 & (board[(j+1)*8+i].getHorizontal()-in)==1) {
                 if (board[(j+1)*8+i].isFigure == 1 & board[(j+1)*8+i].colorF != board[z].colorF) {
@@ -618,8 +645,8 @@ public class Play2 extends AppCompatActivity {
                         list.add((j+1)*8+i);}
                 }
             }}
-        System.out.println("#5");//
-        System.out.println("Конь i:"+i+" j:"+j+" (j+1)*8+i-2:"+((j+1)*8+i-2));
+        // System.out.println("#5");//
+        //System.out.println("Конь i:"+i+" j:"+j+" (j+1)*8+i-2:"+((j+1)*8+i-2));
         if(((j+1)*8+i-2)>-1 & ((j+1)*8+i-2)<64) {
             if ( (board[(j+1)*8+i-2].getVertical()-jn)==2 & (in-board[(j+1)*8+i-2].getHorizontal())==1) {
                 if (board[(j+1)*8+i-2].isFigure == 1 & board[(j+1)*8+i-2].colorF != board[z].colorF) {
@@ -635,8 +662,8 @@ public class Play2 extends AppCompatActivity {
                         list.add((j+1)*8+i-2);}
                 }
             }}
-        System.out.println("#6");//
-        System.out.println("Конь i:"+i+" j:"+j+" j*8+i-3:"+(j*8+i-3));
+        //System.out.println("#6");//
+        // System.out.println("Конь i:"+i+" j:"+j+" j*8+i-3:"+(j*8+i-3));
         if((j*8+i-3)>-1 & (j*8+i-3)<64 ) {
             if ( (board[j*8+i-3].getVertical()-jn)==1 & (in-board[j*8+i-3].getHorizontal())==2) {
                 if (board[j*8+i-3].isFigure == 1 & board[j*8+i-3].colorF != board[z].colorF) {
@@ -652,8 +679,8 @@ public class Play2 extends AppCompatActivity {
                         list.add(j*8+i-3);}
                 }
             }}
-        System.out.println("#7");//
-        System.out.println("Конь i:"+i+" j:"+j+" (j-2)*8+i-3:"+((j-2)*8+i-3));
+        //System.out.println("#7");//
+        //System.out.println("Конь i:"+i+" j:"+j+" (j-2)*8+i-3:"+((j-2)*8+i-3));
         if(((j-2)*8+i-3)>-1 & ((j-2)*8+i-3)<64 ) {
             if ( (jn-board[(j-2)*8+i-3].getVertical())==1 & (in-board[(j-2)*8+i-3].getHorizontal())==2) {
                 if (board[(j-2)*8+i-3].isFigure == 1 & board[(j-2)*8+i-3].colorF != board[z].colorF) {
@@ -669,8 +696,8 @@ public class Play2 extends AppCompatActivity {
                         list.add((j-2)*8+i-3);}
                 }
             }}
-        System.out.println("#8");//
-        System.out.println("Конь i:"+i+" j:"+j+" (j-3)*8+i-2:"+((j-3)*8+i-2));
+        //System.out.println("#8");//
+        //System.out.println("Конь i:"+i+" j:"+j+" (j-3)*8+i-2:"+((j-3)*8+i-2));
         if(((j-3)*8+i-2)>-1 & ((j-3)*8+i-2)<64 ) {
             if ( (jn-board[(j-3)*8+i-2].getVertical())==2 & (in-board[(j-3)*8+i-2].getHorizontal())==1) {
                 if (board[(j-3)*8+i-2].isFigure == 1 & board[(j-3)*8+i-2].colorF != board[z].colorF) {
@@ -695,11 +722,11 @@ public class Play2 extends AppCompatActivity {
         int jn=board[z].getVertical();
         int j=jn;
         int i=in;
-        // System.out.println(list);
+        //System.out.println(list);
 
-        System.out.println("#1");//вниз+вправо
+        //System.out.println("#1");//вниз+вправо
         while(j!=8){
-            System.out.println("Слон i:"+i+" j:"+j+" j*8+i:"+(j*8+i));
+            //System.out.println("Слон i:"+i+" j:"+j+" j*8+i:"+(j*8+i));
             if( i==8|| j==8){break;}
             if((j*8+i)>-1 & (j*8+i)<64) {
                 if (board[j*8+i].isFigure == 1 & board[j*8+i].colorF != board[z].colorF) {
@@ -727,9 +754,9 @@ public class Play2 extends AppCompatActivity {
         i=in;
         //System.out.println(list);
 
-        System.out.println("#2"); //вверх+влево
+        //System.out.println("#2"); //вверх+влево
         while(j!=1){
-            System.out.println("Слон i:"+i+" j:"+j+" (j-2)*8+i-2:"+((j-2)*8+i-2));
+            // System.out.println("Слон i:"+i+" j:"+j+" (j-2)*8+i-2:"+((j-2)*8+i-2));
             if( i==1|| j==1){break;}
             if(((j-2)*8+i-2)>-1 & ((j-2)*8+i-2)<64 ) {
                 if (board[(j-2)*8+i-2].isFigure == 1 & board[(j-2)*8+i-2].colorF != board[z].colorF) {
@@ -756,11 +783,11 @@ public class Play2 extends AppCompatActivity {
         }
         j=jn;
         i=in;
-        //System.out.println(list);
+        // System.out.println(list);
 
-        System.out.println("#3");//вверх+вправо
+        //System.out.println("#3");//вверх+вправо
         while(i!=8){
-            System.out.println("Слон i:"+i+" j:"+j+" (j-2)*8+i:"+((j-2)*8+i));
+            // System.out.println("Слон i:"+i+" j:"+j+" (j-2)*8+i:"+((j-2)*8+i));
             if( i==8|| j==1){break;}
             if(((j-2)*8+i)>-1 & ((j-2)*8+i)<64) {
                 if (board[(j-2)*8+i].isFigure == 1 & board[(j-2)*8+i].colorF != board[z].colorF) {
@@ -787,9 +814,9 @@ public class Play2 extends AppCompatActivity {
         i=in;
         //System.out.println(list);
 
-        System.out.println("#4"); //вниз+влево
+        //System.out.println("#4"); //вниз+влево
         while(i!=1){
-            System.out.println("Слон i:"+i+" j:"+j+" j*8+i-2:"+(j*8+i-2));
+            //System.out.println("Слон i:"+i+" j:"+j+" j*8+i-2:"+(j*8+i-2));
             if( i==1|| j==8){break;}
             if((j*8+i-2)>-1 & (j*8+i-2)<64) {
                 if(board[j*8+i-2].isFigure==1 & board[j*8+i-2].colorF!=board[z].colorF){
@@ -814,16 +841,17 @@ public class Play2 extends AppCompatActivity {
             else{
                 break;}
         }
-        // System.out.println("Слон возможные ходы "+ list+" ChaheQ "+ChaheQ+" GeoOfWking "+GeoOfWKing+" GeoOfBking "+GeoOfBKing+" keyR "+keyR+" MoveFlag "+moveFlag+" ChaheKey "+ChaheKey+" fIdofbutton "+fIdOfButton);
     }
     public  void queen(cell[]board){
         bishop(board);
         rook(board);
     }
     public int isChahe(cell[] board,int Nfield,int Wfield,int color){//Nfield(now Field) текущее поле на котором стоит фигура Wfield(will field) поле куда хочит пойти игрок
-        System.out.println("isChahe ChaheQ in "+ChaheQ);
-        int key=0;
 
+        ChaheKey=0;
+        //keyR=0;
+        int key=0;
+        System.out.println("Контроль вход isChahe "+keyR);
         int buferWfield=board[Wfield].isFigure;
         int buferWfieldColor=board[Wfield].colorF;
         if( board[Nfield].nameF=="Король"){
@@ -836,7 +864,7 @@ public class Play2 extends AppCompatActivity {
 
         }
 
-        //System.out.println("buferWfield "+buferWfield+" buferWfieldColor "+buferWfieldColor+" board[Nfield].nameF "+board[Nfield].nameF+" GeoOfWKing "+GeoOfWKing);
+        // System.out.println("buferWfield "+buferWfield+" buferWfieldColor "+buferWfieldColor+" board[Nfield].nameF "+board[Nfield].nameF+" GeoOfWKing "+GeoOfWKing);
         board[Nfield].isFigure=0;
         board[Wfield].isFigure=1;
         board[Wfield].colorF=color;
@@ -844,7 +872,7 @@ public class Play2 extends AppCompatActivity {
         if(color==0){ Geo=GeoOfWKing;}
         else{ Geo=GeoOfBKing;}
 
-        if(Shah(moveFlag,list).indexOf(Geo)==-1){
+        if(Shah().indexOf(Geo)==-1){
             board[Nfield].isFigure=1;
             board[Wfield].isFigure=buferWfield;
             board[Wfield].colorF=buferWfieldColor;
@@ -855,8 +883,12 @@ public class Play2 extends AppCompatActivity {
                 board[Nfield].nameF="Король";
             }
 
-            System.out.println("Шаха нет");
-            System.out.println("isChahe ChaheQ out  "+ChaheQ);
+            //System.out.println("Шаха нет");
+
+            ChaheKey=0;
+            keyR=1;
+            ChaheQ=0;
+            System.out.println("Контроль выход isChahe "+keyR);
             return 0;//шаха нет
         }
 
@@ -872,69 +904,87 @@ public class Play2 extends AppCompatActivity {
                 else{GeoOfWKing=Nfield;}
                 board[Nfield].nameF="Король";
             }
-            System.out.println("Шах "+" Позиция Короля "+Geo+" Начальная клетка: "+Nfield+" Конечная позиция "+Wfield+"массив битых полей"+Shah(moveFlag,list));
-            System.out.println("isChahe ChaheQ out "+ChaheQ);
+            // System.out.println("Шах "+" Позиция Короля "+Geo+" Начальная клетка: "+Nfield+" Конечная позиция "+Wfield+"массив битых полей"+Shah(moveFlag,list));
+            ChaheKey=0;
+            keyR=1;
+            ChaheQ=0;
+
+            System.out.println("Контроль выход isChahe "+keyR);
             return 1;//шах есть
         }
 
 
     }
     public ArrayList Pat(){
-        System.out.println("PAT In");
-        keyR=1;
+        // System.out.println("PAT In");
 
-        //ChaheQ=0;
-        // System.out.println("  ChaheQ=0;");
+        //keyR=1;
+        ChaheQ=0;
         ChaheKey=1;
-
+        System.out.println("Контроль вход Pat "+keyR);
         ArrayList<Integer> Plist = new ArrayList<>();
-
         Plist.addAll(list);//cохранили массив возможных ходов в Plist
-
         list.clear();//очистили массив возможных ходов
-
         ArrayList<Integer> bufer= new ArrayList<>();
+        for( ChaheQ=0; ChaheQ<=63; ChaheQ++){
+            // System.out.println("ChaheQ "+ChaheQ+" "+board[ ChaheQ].nameF);
+            int SaveChaheQ=0;
+            //System.out.println("ChaheQ "+ChaheQ);
+            // System.out.println("PAT ChaheQ "+ ChaheQ);
+            if(board[ ChaheQ].colorF==moveFlag){
+                keyR=1;
+                switch (board[ ChaheQ].nameF){
+                    case "Пешка": //System.out.println("---------------------------------------Пешка проверка---------------------------------");
+                        ChaheKey=1;
 
-        for( int i=0; i<=63;i++){
-            System.out.println("PAT ChaheQ "+ i);
-            if(board[i].colorF==moveFlag){
-                switch (board[i].nameF){
-                    case "Пешка": System.out.println("---------------------------------------Пешка проверка---------------------------------");
-                        ChaheQ=i;
+                        SaveChaheQ=ChaheQ;
                         pawn(board);
-                        System.out.println("PAT ChaheQ "+ i+ " ChaheQ "+ChaheQ);
-                        ChaheKey=1;
+                        ChaheQ=SaveChaheQ;
+                        // System.out.println("PAT  полсе пешки "+" место "+ChaheQ+"ChaheKey "+ChaheKey+list);
 
                         break;
-                    case "Cлон":   System.out.println("---------------------------------------СЛОН проверка---------------------------------");
-                        ChaheQ=i;
+                    case "Слон":   System.out.println("---------------------------------------СЛОН проверка---------------------------------");
+                        ChaheKey=1;
+
+                        SaveChaheQ=ChaheQ;
                         bishop(board);
+                        ChaheQ=SaveChaheQ;
+                        //System.out.println("PAT массив полсе слона"+" место "+ChaheQ+"ChaheKey "+ChaheKey+list);
 
-                        ChaheKey=1;
                         break;
-                    case "Ферзь": System.out.println("---------------------------------------Ферзь проверка---------------------------------");
-                        ChaheQ=i;
+                    case "Ферзь": //System.out.println("---------------------------------------Ферзь проверка---------------------------------");
+                        ChaheKey=1;
+
+                        SaveChaheQ=ChaheQ;
                         queen(board);
+                        ChaheQ=SaveChaheQ;
+                        //System.out.println("PAT массив полсе ферзя"+" место "+ChaheQ+"ChaheKey "+ChaheKey+list);
 
-                        ChaheKey=1;
                         break;
-                    case "Король":  System.out.println("---------------------------------------Король проверка---------------------------------");
-                        ChaheQ=i;
+                    case "Король": // System.out.println("---------------------------------------Король проверка---------------------------------");
+                        ChaheKey=1;
+
+                        SaveChaheQ=ChaheQ;
                         king(board);
-
-                        ChaheKey=1;
+                        ChaheQ=SaveChaheQ;
+                        // System.out.println("PAT массив полсе короля"+" место "+ChaheQ+"ChaheKey "+ChaheKey+list);
                         break;
-                    case "Конь":   System.out.println("---------------------------------------Конь проверка---------------------------------");
-                        ChaheQ=i;
+                    case "Конь":   //System.out.println("---------------------------------------Конь проверка---------------------------------");
+                        ChaheKey=1;
+
+                        SaveChaheQ=ChaheQ;
                         knight(board);
-
-                        ChaheKey=1;
+                        ChaheQ=SaveChaheQ;
+                        //System.out.println("PAT массив полсе коня"+" место "+ChaheQ+"ChaheKey "+ChaheKey+list);
                         break;
-                    case "Ладья":  System.out.println("---------------------------------------Ладья проверка---------------------------------");
-                        ChaheQ=i;
-                        rook(board);
-
+                    case "Ладья":  //System.out.println("---------------------------------------Ладья проверка---------------------------------");
                         ChaheKey=1;
+
+                        SaveChaheQ=ChaheQ;
+                        rook(board);
+                        ChaheQ=SaveChaheQ;
+                        // System.out.println("PAT массив полсе ладьи"+" место "+ChaheQ+"ChaheKey "+ChaheKey+list);
+
                         break;
 
                 }
@@ -968,53 +1018,54 @@ public class Play2 extends AppCompatActivity {
                     rook(board);
                     System.out.println("PAT массив полсе ладьи"+list);
                 }*/
-            }
-        }
-        System.out.println("IN pat "+list);
+            }}
+        // System.out.println("IN pat "+list);
         bufer.addAll(list);
         list.clear();
         list.addAll(Plist);
+
+        //System.out.println("PAT out");
         ChaheKey=0;
-        System.out.println("PAT out");
+        keyR=1;
+        ChaheQ=0;
+        System.out.println("Контроль выход Pat "+keyR);
         return bufer;
 
     }
 
-    public ArrayList Shah(int moveFlag,ArrayList list){//массив битых полей расчитан для полей которые бьет противник
-        System.out.println("Shah ChaheQ in "+ChaheQ);
+    public ArrayList Shah(){//массив битых полей расчитан для полей которые бьет противник
+
         keyR=0;
+        System.out.println("Контроль вход Shah "+keyR);
         ChaheKey=1;
         ArrayList<Integer> Clist = new ArrayList<>();
         Clist.addAll(list);//cохранили массив возможных ходов в Clist
         list.clear();//очистили массив возможных ходов
-        System.out.println("Clean list "+list);
-
         ArrayList<Integer> bufer= new ArrayList<>();
-        for(int z =0;z<=63;z++){
-            System.out.println("Shah ChaheQ for in "+z);
-            if(board[z].colorF!=moveFlag){
-                if(board[z].nameF=="Пешка"){
-                    System.out.println("---------------------------------------Пешка проверка---------------------------------");
+        for(ChaheQ=0;ChaheQ<=63;ChaheQ++){
+            if(board[ChaheQ].colorF!=moveFlag){
+                if(board[ChaheQ].nameF=="Пешка"){
+                    // System.out.println("---------------------------------------Пешка проверка---------------------------------");
                     //pawn(board);
-
+                    int z=ChaheQ;
                     if (moveFlag==0){
 
                         if (z+9<=63){//взятие
-                            if (board[z + 9].getVertical() - board[z].getVertical() == 1 & ChaheKey==1) {
+                            if (board[z + 9].getVertical() - board[z].getVertical() == 1) {
                                 list.add(z + 9);
                             }}
                         if(z + 7 <= 63 ){//взятие
-                            if (board[z + 7].getVertical() - board[z].getVertical() == 1 &ChaheKey==1) {
+                            if (board[z + 7].getVertical() - board[z].getVertical() == 1) {
                                 list.add(z + 7);
                             }}
                     }
                     else{
                         if(z- 9 >= 0){//взятие
-                            if ( board[z- 9].getVertical() - board[z].getVertical() == -1 & ChaheKey==1) {
+                            if ( board[z- 9].getVertical() - board[z].getVertical() == -1 ) {
                                 list.add(z - 9);
                             }}
                         if(z - 7 >= 0){//взятие
-                            if (board[z - 7].getVertical() - board[z].getVertical() == -1 & ChaheKey==1) {
+                            if (board[z - 7].getVertical() - board[z].getVertical() == -1 ) {
                                 list.add(z - 7);
                             }}
 
@@ -1028,52 +1079,41 @@ public class Play2 extends AppCompatActivity {
                     if(list.indexOf(ChaheQ-8)!=-1){list.remove(list.indexOf(ChaheQ-8));}
                     if(list.indexOf(ChaheQ-16)!=-1){list.remove(list.indexOf(ChaheQ-16));}
                     System.out.println("массив полсе пешки"+list);*/
-                    //System.out.println();
-                    System.out.println( "z "+z+"массив полсе пешки"+list);
                 }
-                else if(board[z].nameF=="Слон"){
+                else if(board[ChaheQ].nameF=="Слон"){
                     //System.out.println("---------------------------------------СЛОН проверка---------------------------------");
-                    ChaheQ=z;
                     bishop(board);
-                    System.out.println( "z "+z+"массив полсе слона"+list);
+                    //  System.out.println("массив полсе слона"+list);
                 }
-                else if(board[z].nameF=="Ферзь"){
+                else if(board[ChaheQ].nameF=="Ферзь"){
                     //System.out.println("---------------------------------------Ферзь проверка---------------------------------");
-                    ChaheQ=z;
                     queen(board);
-
-                    System.out.println( "z "+z+"массив полсе ферзя"+list);
+                    // System.out.println("массив полсе ферзя"+list);
                 }
-                else if(board[z].nameF=="Король"){
+                else if(board[ChaheQ].nameF=="Король"){
                     //System.out.println("---------------------------------------Король проверка---------------------------------");
-                    ChaheQ=z;
                     king(board);
-                    System.out.println( "z "+z+"массив полсе короля"+list);
+                    // System.out.println("массив полсе короля"+list);
                 }
-                else if(board[z].nameF=="Конь"){
+                else if(board[ChaheQ].nameF=="Конь"){
                     //System.out.println("---------------------------------------Конь проверка---------------------------------");
-                    ChaheQ=z;
                     knight(board);
-                    System.out.println( "z "+z+"массив полсе коня"+list);
+                    //System.out.println("массив полсе коня"+list);
                 }
-                else if(board[z].nameF=="Ладья"){
+                else if(board[ChaheQ].nameF=="Ладья"){
                     //System.out.println("---------------------------------------Ладья проверка---------------------------------");
-                    ChaheQ=z;
                     rook(board);
-                    System.out.println( "z "+z+"массив полсе ладьи"+list);
+                    //System.out.println("массив полсе ладьи"+list);
                 }
             }
         }
-
         bufer.addAll(list);
         list.clear();
         list.addAll(Clist);
         ChaheKey=0;
         keyR=1;
-
-        System.out.println("Shah ChaheQ out "+ChaheQ);
-        System.out.println("bufer "+bufer);
-        System.out.println("list "+list);
+        ChaheQ=0;
+        System.out.println("Контроль выход Shah "+keyR);
         return bufer;
     }
     public int toPx(int valueInDp ){
@@ -1087,9 +1127,12 @@ public class Play2 extends AppCompatActivity {
         int K=0;
         if (moveFlag==0){K=GeoOfWKing;}
         else{K=GeoOfBKing;}
-        System.out.println("Before Global "+ChaheQ+ChaheKey+keyR);
-        int SaveChaheQ=ChaheQ;
-        if(Shah(moveFlag,list).indexOf(K)!=-1){
+        System.out.println("ДО,ПРоверка isChahe");
+        for(int i=0;i<=63;i++) {
+            System.out.println("id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF+" номер клетки "+i);
+        }
+        System.out.println("BEFORE< "+list+" / "+ChaheQ+" / "+ChaheKey+" / "+keyR+" / "+moveFlag+" / "+buttonFlag+" / "+GeoOfBKing+" / "+GeoOfWKing+" / "+fIdOfButton+" / "+fIdOfButton2);
+        if(Shah().indexOf(K)!=-1){
 
             if (Pat().size()==0){
                 textView=findViewById(R.id.textView);
@@ -1100,10 +1143,11 @@ public class Play2 extends AppCompatActivity {
 
             else{textView=findViewById(R.id.textView);
                 textView=findViewById(R.id.textView);
-                System.out.println("Перед шахом "+Shah(moveFlag,list));
+
                 textView.setText("ШАХ");
                 System.out.println("ШАХ");}
         }
+
         else if (Pat().size()==0){
             textView=findViewById(R.id.textView);
             textView.setText("ПАТ");
@@ -1115,18 +1159,21 @@ public class Play2 extends AppCompatActivity {
             textView = findViewById(R.id.textView);
             textView.setText(" НЕ МАТ НЕ ШАХ");
             System.out.println("НЕ MAT НЕ ШАХ" );
-            //System.out.println( "buf "+Pat());
+            System.out.println( "buf "+Pat());
+            System.out.println( "list "+list);
+            System.out.println( "ChaheQ "+ChaheQ);
             System.out.println("##########################################################2");
             //textView.setText( Pat(moveFlag,list).size());
             //System.out.println("/////////////////////////////////////////////////Пользователь может пойти"+Pat(moveFlag,list).size());}
         }
-
-
+        System.out.println("ПОСЛЕ,ПРоверка isChahe");
+        for(int i=0;i<=63;i++) {
+            System.out.println("id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF+" номер клетки "+i);
+        }
         idOfButton2=v.getResources().getResourceName(v.getId());
         fIdOfButton2=Integer.parseInt(idOfButton2.substring(32));
+        System.out.println("AFTER< "+list+" / "+ChaheQ+" / "+ChaheKey+" / "+keyR+" / "+moveFlag+" / "+buttonFlag+" / "+GeoOfBKing+" / "+GeoOfWKing+" / "+fIdOfButton+" / "+fIdOfButton2);
 
-        ChaheQ=SaveChaheQ;
-        System.out.println("After Global "+ChaheQ+ChaheKey+keyR);
         if(buttonFlag==0){//фигура не выбрана,ход не сделан
             idOfButton=v.getResources().getResourceName(v.getId());//получаем айди кнопки
             fIdOfButton=Integer.parseInt(idOfButton.substring(32));//финальная цифра id для использования для поиска по массиву
@@ -1146,8 +1193,11 @@ public class Play2 extends AppCompatActivity {
 
                 }
                 if(board[fIdOfButton].nameF=="Ладья"){//если эта фигура ладья
+                    System.out.println("Вход в ладью "+keyR);
                     rook(board);
-                    // System.out.println(list);
+                    //System.out.println(list);
+                    System.out.println("Выход из ладьи "+keyR);
+                    System.out.println("list после ладьи "+list);
 
                 }
                 if(board[fIdOfButton].nameF=="Слон"){//если эта фигура слон
@@ -1167,7 +1217,7 @@ public class Play2 extends AppCompatActivity {
                 }
                 if(board[fIdOfButton].nameF=="Король"){//если эта фигура король
                     king(board);
-                    //System.out.println(list);
+                    // System.out.println(list);
                 }
 
 
@@ -1253,6 +1303,9 @@ public class Play2 extends AppCompatActivity {
             textView=findViewById(R.id.textView);
             textView.setText("пользователь ошибся с ходом пусть выбирает заново");
             list.clear();//очищаем список возможных  ходов
+            for(int i=0;i<=63;i++) {
+                System.out.println("id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF);
+            }
         }
 
 
