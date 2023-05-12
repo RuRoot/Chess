@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,11 +21,13 @@ public class Play2 extends AppCompatActivity {
 
     public ImageView pop;
     public class cell {
-        private int color;//цвет клетки 0- белый ,1-черный
-        private int horizontal;//координата по горизонтали
-        private int vertical;//координата по вертикали
-        private int isFigure;//если на этом поле фигура 1 иначе 0
-        private int idF;//id фигуры для сопостовления с картинкой
+        public int color;//цвет клетки 0- белый ,1-черный
+        public int horizontal;//координата по горизонтали
+        public int vertical;//координата по вертикали
+        public int isFigure;//если на этом поле фигура 1 иначе 0
+        public int idF;//id фигуры для сопостовления с картинкой
+        public int colorF;//цвет фигуры на поле,если фигуры нет то "",черная -1,белая-0
+        public String nameF;//название фигуры на поле для изображения в графике
 
         public cell(int color, int horizontal, int vertical, int isFigure, String nameF, int colorF,int idF) {
             this.color = color;
@@ -73,8 +76,7 @@ public class Play2 extends AppCompatActivity {
             return (vertical + horizontal);
         }
 
-        private int colorF;//цвет фигуры на поле,если фигуры нет то "",черная -1,белая-0
-        private String nameF;//название фигуры на поле для изображения в графике
+
 
 
         public void setColorF(int colorF) {
@@ -96,141 +98,146 @@ public class Play2 extends AppCompatActivity {
     //public void printInfo(int isFigure,int color,int horizontal,int vertical) {
     //System.out.println(isFigure+color+horizontal+vertical);
     //}
-
-
     cell[] board;
+
+     void start(){
+         int d=0;//для id image
+         board =new cell[64];//создаем массив из 64 клеток то бишь доску
+         int tmpColor=0;//перваночальное значение цвета для заполнения доски 0 т.к начинаем заполнять с а8
+         int tmpVertical=1;
+         int tmpHorizontal=1;
+         int tmpColorF=1;
+         int tmpIsFigure=1;
+         int idF=0;
+         String tmpNameF="Ладья";
+         for(int i=0;i!=64;i++){
+
+
+             board[i]=new cell(tmpColor,tmpHorizontal,tmpVertical,tmpIsFigure,tmpNameF,tmpColorF,idF);
+             tmpIsFigure=0;//стваим что клетки пустые
+             tmpNameF="";//обнуляем фигуру
+             tmpHorizontal+=1;
+             if (tmpHorizontal==9) {//если горизонталь заканчиваеться переходим на следующую вертикаль
+                 tmpHorizontal=1;
+                 tmpVertical+=1;
+             }
+             if(tmpVertical==7) {//расставляемчерн пешки
+                 tmpColorF=0;
+                 tmpNameF="Пешка";
+                 tmpIsFigure=1;
+             }
+             if(tmpVertical==2) {//расставляем черные пешки
+                 tmpColorF=1;
+                 tmpNameF="Пешка";
+                 tmpIsFigure=1;
+             }
+             if(tmpVertical==1 &(tmpHorizontal==1| tmpHorizontal==8)) {//расставляем чёрные ладьи
+                 tmpColorF=1;
+                 tmpNameF="Ладья";
+                 tmpIsFigure=1;
+
+             }
+             if(tmpVertical==8 &(tmpHorizontal==1| tmpHorizontal==8)) {//расставляем белые ладьи
+                 tmpColorF=0;
+                 tmpNameF="Ладья";
+                 tmpIsFigure=1;
+
+             }
+             if(tmpVertical==1 &(tmpHorizontal==2| tmpHorizontal==7)) {//расставляем чёрных коней
+                 tmpColorF=1;
+                 tmpNameF="Конь";
+                 tmpIsFigure=1;
+
+             }
+             if(tmpVertical==8 &(tmpHorizontal==2| tmpHorizontal==7)) {//расставляем белых коней
+                 tmpColorF=0;
+                 tmpNameF="Конь";
+                 tmpIsFigure=1;
+
+             }
+             if(tmpVertical==1 &(tmpHorizontal==3| tmpHorizontal==6)) {//расставляем чёрных слонов
+                 tmpColorF=1;
+                 tmpNameF="Слон";
+                 tmpIsFigure=1;
+
+             }
+             if(tmpVertical==8 &(tmpHorizontal==3| tmpHorizontal==6)) {//расставляем белых слонов
+                 tmpColorF=0;
+                 tmpNameF="Слон";
+                 tmpIsFigure=1;
+
+             }
+             if(tmpVertical==1 &(tmpHorizontal==4)) {//расставляем черного короля
+                 tmpColorF=1;
+                 tmpNameF="Ферзь";
+                 tmpIsFigure=1;
+
+             }
+             if(tmpVertical==8 &(tmpHorizontal==4)) {//расставляем белого короля
+                 tmpColorF=0;
+                 tmpNameF="Ферзь";
+                 tmpIsFigure=1;
+
+             }
+             if(tmpVertical==1 &(tmpHorizontal==5)) {//расставляем черного ферзя
+                 tmpColorF=1;
+                 tmpNameF="Король";
+                 tmpIsFigure=1;
+
+             }
+             if(tmpVertical==8 &(tmpHorizontal==5)) {//расставляем белогоферзя
+                 tmpColorF=0;
+                 tmpNameF="Король";
+                 tmpIsFigure=1;
+
+             }
+             if(tmpColor==0 & tmpHorizontal!=1) {//черные белые клетки 1 через 1
+                 tmpColor=1;
+             }
+
+             else if(tmpHorizontal!=1) {//когда переходим на новую вертикаль цвет сохраняется
+                 tmpColor=0;
+             }
+             if(i<=15 || i>47 ) {
+                 idF=d+1;
+                 d=idF;
+             }
+             else {
+                 board[i].idF=100;
+             }}
+     }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play2);
-        //cell[] board;
-        int d=0;//для id image
-        board =new cell[64];//создаем массив из 64 клеток то бишь доску
-        int tmpColor=0;//перваночальное значение цвета для заполнения доски 0 т.к начинаем заполнять с а8
-        int tmpVertical=1;
-        int tmpHorizontal=1;
-        int tmpColorF=1;
-        int tmpIsFigure=1;
-        int idF=0;
-        String tmpNameF="Ладья";
-        for(int i=0;i!=64;i++){
-
-
-            board[i]=new cell(tmpColor,tmpHorizontal,tmpVertical,tmpIsFigure,tmpNameF,tmpColorF,idF);
-            tmpIsFigure=0;//стваим что клетки пустые
-            tmpNameF="";//обнуляем фигуру
-            tmpHorizontal+=1;
-            if (tmpHorizontal==9) {//если горизонталь заканчиваеться переходим на следующую вертикаль
-                tmpHorizontal=1;
-                tmpVertical+=1;
-            }
-            if(tmpVertical==7) {//расставляемчерн пешки
-                tmpColorF=0;
-                tmpNameF="Пешка";
-                tmpIsFigure=1;
-            }
-            if(tmpVertical==2) {//расставляем черные пешки
-                tmpColorF=1;
-                tmpNameF="Пешка";
-                tmpIsFigure=1;
-            }
-            if(tmpVertical==1 &(tmpHorizontal==1| tmpHorizontal==8)) {//расставляем чёрные ладьи
-                tmpColorF=1;
-                tmpNameF="Ладья";
-                tmpIsFigure=1;
-
-            }
-            if(tmpVertical==8 &(tmpHorizontal==1| tmpHorizontal==8)) {//расставляем белые ладьи
-                tmpColorF=0;
-                tmpNameF="Ладья";
-                tmpIsFigure=1;
-
-            }
-            if(tmpVertical==1 &(tmpHorizontal==2| tmpHorizontal==7)) {//расставляем чёрных коней
-                tmpColorF=1;
-                tmpNameF="Конь";
-                tmpIsFigure=1;
-
-            }
-            if(tmpVertical==8 &(tmpHorizontal==2| tmpHorizontal==7)) {//расставляем белых коней
-                tmpColorF=0;
-                tmpNameF="Конь";
-                tmpIsFigure=1;
-
-            }
-            if(tmpVertical==1 &(tmpHorizontal==3| tmpHorizontal==6)) {//расставляем чёрных слонов
-                tmpColorF=1;
-                tmpNameF="Слон";
-                tmpIsFigure=1;
-
-            }
-            if(tmpVertical==8 &(tmpHorizontal==3| tmpHorizontal==6)) {//расставляем белых слонов
-                tmpColorF=0;
-                tmpNameF="Слон";
-                tmpIsFigure=1;
-
-            }
-            if(tmpVertical==1 &(tmpHorizontal==4)) {//расставляем черного короля
-                tmpColorF=1;
-                tmpNameF="Ферзь";
-                tmpIsFigure=1;
-
-            }
-            if(tmpVertical==8 &(tmpHorizontal==4)) {//расставляем белого короля
-                tmpColorF=0;
-                tmpNameF="Ферзь";
-                tmpIsFigure=1;
-
-            }
-            if(tmpVertical==1 &(tmpHorizontal==5)) {//расставляем черного ферзя
-                tmpColorF=1;
-                tmpNameF="Король";
-                tmpIsFigure=1;
-
-            }
-            if(tmpVertical==8 &(tmpHorizontal==5)) {//расставляем белогоферзя
-                tmpColorF=0;
-                tmpNameF="Король";
-                tmpIsFigure=1;
-
-            }
-            if(tmpColor==0 & tmpHorizontal!=1) {//черные белые клетки 1 через 1
-                tmpColor=1;
-            }
-
-            else if(tmpHorizontal!=1) {//когда переходим на новую вертикаль цвет сохраняется
-                tmpColor=0;
-            }
-            if(i<=15 || i>47 ) {
-                idF=d+1;
-                d=idF;
-            }
-            else {
-                board[i].idF=100;
-            }
-            //System.out.println("id фигуры:"+board[i].getidF()+"цвет:"+board[i].color+" вертикаль:"+board[i].vertical+" горизонталь:"+board[i].horizontal+" есть ли фигура:"+board[i].isFigure+" название фигуры:"+board[i].nameF+" цвет фигуры:"+board[i].colorF);
-
-
-
-        }
-
+        start();
 
     }
+
     String[] figure = {"Ладья", "Конь", "Ферзь", "Слон"};
     boolean isPromotion=false;
+    boolean can=true;
+    int arrangementKey1=0;//для передачи id нажатой кнопки
+    int arrangementKey=0;//для передачи id
     int wasMooveBKing =0;//для рокировки ходил ли черный король
     int wasMooveWKing =0;//для рокировки ходил ли белый король
     int wasMooveRook0 =0;//для рокировки ходила ли черная ладья на 0
     int wasMooveRook7 =0;//для рокировки ходила ли черная ладья на 7
     int wasMooveRook56 =0;//для рокировки ходила ли белая ладья на 56
     int wasMooveRook63=0;//для рокировки ходила ли белая ладья на 63
+    int testKey=0;//0 для test 1 для exersize
+    int figureCount=0;//количество раставленных фигур
+    int graphicPromotionKey=0;//если 0 то обычная замена,1-расстановка
     int geoPawn=-1;
     String idOfButton;//айди кнопки
     int fIdOfButton=0;//финальная цифра id для использования для поиска по массиву
     String idOfButton2;//айди кнопки (2)
     String idOfButtonForPromotion;
-    int fIdOfButtonForPromotion;
-    int fIdOfButton2;//финальная цифра id для использования для поиска по массиву(2)
+    int fIdOfButtonForPromotion=-1;
+    int fIdOfButton2=-1;//финальная цифра id для использования для поиска по массиву(2)
     int buttonFlag=0;//флаг кнопки 0- фигура не выбрана,ход не сделан, 1-фигура выбрана ,ход не сделан/cделан
     int moveFlag=0;//флаг хода 0-ход белых,1-ход чёрных
     ArrayList<Integer> list = new ArrayList<>();//массив возможных ходов
@@ -242,16 +249,19 @@ public class Play2 extends AppCompatActivity {
     int ChaheQ=0;//имитируем нажатие на кнопку для расчета возможных ходов и битых полей
     int keyR=1;//0- только Shah(для противника) 1- только isChahe(для себя,не открываем короля)
     int moveCount=0;
+    int countKing=0;
 
     // int testing=0;//создана переменная для тестировки 0-заход через Pat 1-заход через фигуру 2-заход через Chahe
     String idOfImage;
     public int[] img = new int[]{R.id.imageView0,R.id.imageView1,R.id.imageView2,R.id.imageView3,R.id.imageView4,R.id.imageView5,R.id.imageView6,R.id.imageView7,R.id.imageView8,R.id.imageView9,R.id.imageView10,R.id.imageView11,R.id.imageView12,R.id.imageView13,R.id.imageView14,R.id.imageView15,R.id.imageView48,R.id.imageView49,R.id.imageView50,R.id.imageView51,R.id.imageView52,R.id.imageView53,R.id.imageView54,R.id.imageView55,R.id.imageView56,R.id.imageView57,R.id.imageView58,R.id.imageView59,R.id.imageView60,R.id.imageView61,R.id.imageView62,R.id.imageView63};//массив id
-    public int[] imgForPromotion = new int[]{R.id.imageView16,R.id.imageView17,R.id.imageView18,R.id.imageView19,R.id.imageView20,R.id.imageView21,R.id.imageView22,R.id.imageView23};
-
-    public Integer[] btnForPromotion0 = new Integer[]{R.id.imageButton64,R.id.imageButton65,R.id.imageButton66,R.id.imageButton67,R.id.imageButton68,R.id.imageButton69,R.id.imageButton70,R.id.imageButton71};
+    public int[] imgForPromotion = new int[]{R.id.imageView16,R.id.imageView17,R.id.imageView18,R.id.imageView19,R.id.imageView20,R.id.imageView21,R.id.imageView22,R.id.imageView23,R.id.imageView24,R.id.imageView25,R.id.imageView26,R.id.imageView27};
+    public Integer[] imgforCalcImg = new Integer[]{R.id.imageView0,R.id.imageView1,R.id.imageView2,R.id.imageView3,R.id.imageView4,R.id.imageView5,R.id.imageView6,R.id.imageView7,R.id.imageView8,R.id.imageView9,R.id.imageView10,R.id.imageView11,R.id.imageView12,R.id.imageView13,R.id.imageView14,R.id.imageView15,R.id.imageView48,R.id.imageView49,R.id.imageView50,R.id.imageView51,R.id.imageView52,R.id.imageView53,R.id.imageView54,R.id.imageView55,R.id.imageView56,R.id.imageView57,R.id.imageView58,R.id.imageView59,R.id.imageView60,R.id.imageView61,R.id.imageView62,R.id.imageView63,0};
+    public Integer[] btnForPromotion0 = new Integer[]{R.id.imageButton64,R.id.imageButton65,R.id.imageButton66,R.id.imageButton67,R.id.imageButton68,R.id.imageButton69,R.id.imageButton70,R.id.imageButton71,R.id.imageButton72,R.id.imageButton73,R.id.imageButton74,R.id.imageButton75};
     ArrayList<Integer> btnForPromotion = new ArrayList<>(Arrays.asList(btnForPromotion0));
-
+    ArrayList<Integer> forCalcImg  = new ArrayList<>(Arrays.asList(imgforCalcImg));
+    public String[] figureForPromotion = new String[]{"Пешка","Ладья","Конь","Ферзь","Слон","Король"};
     ImageView imageView;
+    int indexImg=0;
     public void graphicChange(){
         System.out.println("Зашел в graphicChange ход "+moveCount);
         imageView = findViewById(img[board[fIdOfButton].getidF()]);
@@ -307,60 +317,67 @@ public class Play2 extends AppCompatActivity {
         }
     }
     public void graphicPromotion(View v){
+if (graphicPromotionKey==0) {
+    idOfButtonForPromotion = v.getResources().getResourceName(v.getId());
+    fIdOfButtonForPromotion = Integer.parseInt(idOfButtonForPromotion.substring(32));
+    System.out.println("fIdOfButtonForPromotion " + (fIdOfButtonForPromotion - 64));
 
-        idOfButtonForPromotion=v.getResources().getResourceName(v.getId());
-        fIdOfButtonForPromotion=Integer.parseInt(idOfButtonForPromotion.substring(32));
-        System.out.println("fIdOfButtonForPromotion "+(fIdOfButtonForPromotion-64));
-
-        int index=fIdOfButtonForPromotion-64;//нашли индекс кнопки в массиве
-        int idOfImage=imgForPromotion[index];//нашли id изображения
-        imageView=findViewById(idOfImage);//получили обьект изображения
-        Drawable q=imageView.getDrawable();//получили рисунок
-        int height=findViewById(idOfImage).getHeight();//нашли высоту изображения
-        int whidth=findViewById(idOfImage).getWidth();//нашли ширину изображения
-        float y0=imageView.getY();
-        float x0=imageView.getX();
-
-
+    int index = fIdOfButtonForPromotion - 64;//нашли индекс кнопки в массиве
+    int idOfImage = imgForPromotion[index];//нашли id изображения
+    imageView = findViewById(idOfImage);//получили обьект изображения
+    Drawable q = imageView.getDrawable();//получили рисунок
+    int height = findViewById(idOfImage).getHeight();//нашли высоту изображения
+    int whidth = findViewById(idOfImage).getWidth();//нашли ширину изображения
+    float y0 = imageView.getY();
+    float x0 = imageView.getX();
 
 
-
-        imageView=findViewById(img[board[fIdOfButton2].getidF()]);
-        imageView.getLayoutParams().width = whidth;//установили ширину
-        imageView.getLayoutParams().height = height;//установили высоту
-
+    imageView = findViewById(img[board[fIdOfButton2].getidF()]);
+    imageView.getLayoutParams().width = whidth;//установили ширину
+    imageView.getLayoutParams().height = height;//установили высоту
 
 
-        if(board[fIdOfButton2].colorF==0){
-            imageView.setY(y0-(9*toPx(49)));
-            if(board[fIdOfButton2].getHorizontal()<=6){imageView.setX(x0+toPx((board[fIdOfButton2].getHorizontal()-index-3) *49));
-            }
-            else if(board[fIdOfButton2].getHorizontal()>6){imageView.setX(x0+toPx((board[fIdOfButton2].getHorizontal()-index-3) *49));}
+    if (board[fIdOfButton2].colorF == 0) {
+        imageView.setY(y0 - (9 * toPx(49)));
+        if (board[fIdOfButton2].getHorizontal() <= 6) {
+            imageView.setX(x0 + toPx((board[fIdOfButton2].getHorizontal() - index - 3) * 49));
+        } else if (board[fIdOfButton2].getHorizontal() > 6) {
+            imageView.setX(x0 + toPx((board[fIdOfButton2].getHorizontal() - index - 3) * 49));
         }
-        else{imageView.setY(y0-(3*toPx(49)));
-            if(board[fIdOfButton2].getHorizontal()<=6){imageView.setX(x0+toPx((board[fIdOfButton2].getHorizontal()-index+1) *49));
+    } else {
+        imageView.setY(y0 - (3 * toPx(49)));
+        if (board[fIdOfButton2].getHorizontal() <= 6) {
+            imageView.setX(x0 + toPx((board[fIdOfButton2].getHorizontal() - index + 1) * 49));
 
-            }
-            else if(board[fIdOfButton2].getHorizontal()>6){imageView.setX(x0+toPx((board[fIdOfButton2].getHorizontal()-index+1) *49));
-            }
+        } else if (board[fIdOfButton2].getHorizontal() > 6) {
+            imageView.setX(x0 + toPx((board[fIdOfButton2].getHorizontal() - index + 1) * 49));
         }
-        imageView.setImageDrawable(q);//поставили рисунок
-
-
-
-
-        if(index<4)
-            board[fIdOfButton2].nameF=figure[index];
-        else{
-            board[fIdOfButton2].nameF=figure[index-4];
-        }
-        System.out.println("Promotion1");
-
-        afterPromotion();
-        isPromotion=false;
-        statusCalculation();
-
     }
+    imageView.setImageDrawable(q);//поставили рисунок
+
+
+    if (index < 4)
+        board[fIdOfButton2].nameF = figure[index];
+    else {
+        board[fIdOfButton2].nameF = figure[index - 4];
+    }
+    System.out.println("Promotion1");
+
+    afterPromotion();
+    isPromotion = false;
+    statusCalculation();
+
+
+} else{
+    idOfButtonForPromotion = v.getResources().getResourceName(v.getId());
+    fIdOfButtonForPromotion = Integer.parseInt(idOfButtonForPromotion.substring(32));
+    System.out.println("Зашел в график,");
+
+    int index = fIdOfButtonForPromotion - 64;//нашли индекс кнопки в массиве
+    arrangementKey1=index;
+    arrangementKey = imgForPromotion[index];//нашли id изображения
+
+} }
     public void graphicEnPassant(){
         imageView=findViewById(img[board[geoPawn].getidF()]);
 
@@ -374,6 +391,16 @@ public class Play2 extends AppCompatActivity {
         board[geoPawn].colorF=0;
 
 
+    }
+    public void calcImg(){
+        if (forCalcImg.get(1)!=0){
+        int bufer = forCalcImg.get(0);
+        forCalcImg.add(bufer);
+        forCalcImg.remove(0);}
+        else{
+            can=false;
+        }
+        indexImg=indexImg+1;
     }
     public void change(cell[]board){
         System.out.println("Зашел в change ход "+moveCount);
@@ -1478,24 +1505,87 @@ public class Play2 extends AppCompatActivity {
                 TypedValue.COMPLEX_UNIT_DIP, valueInDp, getResources().getDisplayMetrics());
         return valueInPx;
     }
-    public  void test(View v){
-        System.out.println("Promotion "+isPromotion);
-        if(isPromotion==true){
-            System.out.println("Promotion");
-            return ;
+    public void startPlay(View v){
+        if (GeoOfWKing!=-1 &GeoOfBKing!=-1 ){
+            Switch switch1 = (Switch) findViewById(R.id.switch1);
+            if(switch1.isChecked()==true){
+                moveFlag=0;
+            }
+            else{moveFlag=1;}
+
+            boolean value=true;
+            if( moveFlag==0){
+                moveFlag=1;
+            if (Shah().indexOf(GeoOfBKing)!=-1){
+                value=false;
+                textView = findViewById(R.id.textView);
+                textView.setText("Нельзя начинать игру из-за шаха!");
+
+            }
+            moveFlag=0;}
+            else  if( moveFlag==1){
+                moveFlag=0;
+                if (Shah().indexOf(GeoOfWKing)!=-1){
+                    value=false;
+
+                textView = findViewById(R.id.textView);
+                textView.setText("Нельзя начинать игру из-за шаха!");}
+                moveFlag=1;
+            }
+            else {System.out.println("GeoOfBKing "+GeoOfBKing+"GeoOfWKing "+GeoOfWKing);}
+
+
+
+            if (Pat().size()==0){value=false;
+                textView = findViewById(R.id.textView);
+                textView.setText("Нельзя начинать игру из-за пата!");}
+            if (countKing>2){
+                value=false;
+                textView = findViewById(R.id.textView);
+                textView.setText("Нельзя начинать игру, расставлено больше 2 королей!");}
+            if (value==true){
+                testKey=0;
+                graphicPromotionKey=0;
+                for(int i=0;i!=12;i++){
+                    ImageButton btn =(ImageButton) findViewById(btnForPromotion0[i]);
+                    btn.setVisibility(View.INVISIBLE);
+                    ImageView vi =(ImageView) findViewById(imgForPromotion[i]);
+                    vi.setVisibility(View.INVISIBLE);
+                }
+                switch1.setVisibility(View.INVISIBLE);
+                ImageView vi =(ImageView) findViewById(R.id.imageViewo);
+                vi.setVisibility(View.INVISIBLE);
+
+            }
         }
-        else{System.out.println("не Promotion");}
+        else{
+            textView = findViewById(R.id.textView);
+            textView.setText("Нельзя начинать игру, короли не раставлены!");
+        }
 
-        // System.out.println("Зашёл в test"+moveCount);
-        idOfButton2=v.getResources().getResourceName(v.getId());
-        fIdOfButton2=Integer.parseInt(idOfButton2.substring(32));
-        this.board=board;
 
-        if(buttonFlag==0){//фигура не выбрана,ход не сделан
-            idOfButton=v.getResources().getResourceName(v.getId());//получаем айди кнопки
-            fIdOfButton=Integer.parseInt(idOfButton.substring(32));//финальная цифра id для использования для поиска по массиву
-            textView=findViewById(R.id.textView);
-            // statusCalculation();
+
+    }
+    public  void test(View v) {
+        if (testKey == 0) {
+            System.out.println("Promotion " + isPromotion);
+            if (isPromotion == true) {
+                System.out.println("Promotion");
+                return;
+            } else {
+                System.out.println("не Promotion");
+            }
+
+            // System.out.println("Зашёл в test"+moveCount);
+            idOfButton2 = v.getResources().getResourceName(v.getId());
+            fIdOfButton2 = Integer.parseInt(idOfButton2.substring(32));
+            this.board = board;
+
+            if (buttonFlag == 0) {//фигура не выбрана,ход не сделан
+                idOfButton = v.getResources().getResourceName(v.getId());//получаем айди кнопки
+                fIdOfButton = Integer.parseInt(idOfButton.substring(32));//финальная цифра id для использования для поиска по массиву
+                textView = findViewById(R.id.textView);
+                // statusCalculation();
            /* int K=0;
             if (moveFlag==0){K=GeoOfWKing;}
             else{K=GeoOfBKing;}
@@ -1554,99 +1644,91 @@ public class Play2 extends AppCompatActivity {
                 //textView.setText( Pat(moveFlag,list).size());
                 //System.out.println("/////////////////////////////////////////////////Пользователь может пойти"+Pat(moveFlag,list).size());}
             }*/
-            // textView.setText("эта фигура:"+board[fIdOfButton].nameF);
-            //textView.setText("эта фигура:"+board[fIdOfButton].getidF());
-            keyR=1;
+                // textView.setText("эта фигура:"+board[fIdOfButton].nameF);
+                //textView.setText("эта фигура:"+board[fIdOfButton].getidF());
+                keyR = 1;
 
 
-            if(board[fIdOfButton].isFigure==1 & board[fIdOfButton].colorF==moveFlag){//если есть фигура на этом поле и ход этого игрока,то:
-                if(board[fIdOfButton].nameF=="Пешка"){//если эта фигура пешка
+                if (board[fIdOfButton].isFigure == 1 & board[fIdOfButton].colorF == moveFlag) {//если есть фигура на этом поле и ход этого игрока,то:
+                    if (board[fIdOfButton].nameF == "Пешка") {//если эта фигура пешка
 
-                    textView=findViewById(R.id.textView);
-                    pawn(board);
-                    textView=findViewById(R.id.textView);
+                        textView = findViewById(R.id.textView);
+                        pawn(board);
+                        textView = findViewById(R.id.textView);
 
+
+                    }
+                    if (board[fIdOfButton].nameF == "Ладья") {//если эта фигура ладья
+                        //System.out.println("Вход в ладью "+keyR);
+                        rook(board);
+                        //System.out.println(list);
+                        //System.out.println("Выход из ладьи "+keyR);
+                        //System.out.println("list после ладьи "+list);
+
+                    }
+                    if (board[fIdOfButton].nameF == "Слон") {//если эта фигура слон
+                        bishop(board);
+                        //System.out.println(list);
+
+                    }
+                    if (board[fIdOfButton].nameF == "Конь") {//если эта фигура конь
+                        knight(board);
+                        // System.out.println(list);
+
+                    }
+                    if (board[fIdOfButton].nameF == "Ферзь") {//если эта фигура ферзь
+                        queen(board);
+                        //System.out.println(list);
+
+                    }
+                    if (board[fIdOfButton].nameF == "Король") {//если эта фигура король
+                        king(board);
+                        // System.out.println(list);
+                    }
+
+
+                    buttonFlag = 1;
 
 
                 }
-                if(board[fIdOfButton].nameF=="Ладья"){//если эта фигура ладья
-                    //System.out.println("Вход в ладью "+keyR);
-                    rook(board);
-                    //System.out.println(list);
-                    //System.out.println("Выход из ладьи "+keyR);
-                    //System.out.println("list после ладьи "+list);
+                // System.out.println("ход номер "+moveCount+" №5 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
+
+
+            } else if (buttonFlag == 1 & list.indexOf(fIdOfButton2) != -1) {//фигура выбрана ,ход не сделан/сделан(если в списке ходов найдена эта клетка)
+                //this.img=img;
+                // textView=findViewById(R.id.textView);
+
+                if (board[fIdOfButton].nameF == "Пешка" & (board[fIdOfButton2].getVertical() == 8 || board[fIdOfButton2].getVertical() == 1)) {
+                    isPromotion = true;
+                    beforePromotion();
+
 
                 }
-                if(board[fIdOfButton].nameF=="Слон"){//если эта фигура слон
-                    bishop(board);
-                    //System.out.println(list);
+                graphicChange();
+                list.clear();//очищаем список возможных ходов
+                if (board[fIdOfButton].nameF == "Король" & Math.abs(fIdOfButton - fIdOfButton2) == 2) {
 
-                }
-                if(board[fIdOfButton].nameF=="Конь"){//если эта фигура конь
-                    knight(board);
-                    // System.out.println(list);
+                    graphicCastling();
 
-                }
-                if(board[fIdOfButton].nameF=="Ферзь"){//если эта фигура ферзь
-                    queen(board);
-                    //System.out.println(list);
-
-                }
-                if(board[fIdOfButton].nameF=="Король"){//если эта фигура король
-                    king(board);
-                    // System.out.println(list);
+                } else {
+                    change(board);
                 }
 
+                buttonFlag = 0;
 
-
-                buttonFlag=1;
-
-
-
-
-
-            }
-            // System.out.println("ход номер "+moveCount+" №5 Есть ли фигура на 8:"+board[8].isFigure+" назвнание фигуры на 8:"+board[8].nameF+" id фигуры на 8:"+board[8].idF);
-
-
-        }
-
-
-        else if(buttonFlag==1 & list.indexOf(fIdOfButton2)!=-1) {//фигура выбрана ,ход не сделан/сделан(если в списке ходов найдена эта клетка)
-            //this.img=img;
-            // textView=findViewById(R.id.textView);
-
-            if (board[fIdOfButton].nameF=="Пешка" & (board[fIdOfButton2].getVertical()==8 || board[fIdOfButton2].getVertical()==1)){
-                isPromotion=true;
-                beforePromotion();
-
-
-            }
-            graphicChange();
-            list.clear();//очищаем список возможных ходов
-            if (board[fIdOfButton].nameF=="Король" & Math.abs(fIdOfButton-fIdOfButton2)==2){
-
-                graphicCastling();
-
-            }
-            else {
-                change(board);}
-
-            buttonFlag = 0;
-
-            moveFlag = Math.abs(moveFlag - 1);
-            moveCount++;
-            list.clear();
-            statusCalculation();
-            System.out.println("Promotion2");
-            list.clear();
-            //очищаем список возможных ходов
-            //imageView.setY(imageView.getY()); //+ ((board[fIdOfButton2].getVertical() - board[fIdOfButton].getVertical())) * valueInPx);
-            //imageView.setX(imageView.getX()); //+ ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * valueInPx);
-            //textView=findViewById(R.id.textView);
-            //textView.setText(getResources().getDisplayMetrics().density+" "+getResources().getDisplayMetrics().densityDpi+" "+getResources().getDisplayMetrics().widthPixels+" "+getResources().getDisplayMetrics().heightPixels+"");
-            //textView=findViewById(R.id.textView);
-            //textView.setText(imageView.);
+                moveFlag = Math.abs(moveFlag - 1);
+                moveCount++;
+                list.clear();
+                statusCalculation();
+                System.out.println("Promotion2");
+                list.clear();
+                //очищаем список возможных ходов
+                //imageView.setY(imageView.getY()); //+ ((board[fIdOfButton2].getVertical() - board[fIdOfButton].getVertical())) * valueInPx);
+                //imageView.setX(imageView.getX()); //+ ((board[fIdOfButton2].getHorizontal() - board[fIdOfButton].getHorizontal())) * valueInPx);
+                //textView=findViewById(R.id.textView);
+                //textView.setText(getResources().getDisplayMetrics().density+" "+getResources().getDisplayMetrics().densityDpi+" "+getResources().getDisplayMetrics().widthPixels+" "+getResources().getDisplayMetrics().heightPixels+"");
+                //textView=findViewById(R.id.textView);
+                //textView.setText(imageView.);
             /* for(int u=0;u<64;u++){
                  System.out.println("ПЕРИРЕСОВКА"+u);
                  if(board[u].idF!=100 ){
@@ -1659,37 +1741,112 @@ public class Play2 extends AppCompatActivity {
                      System.out.println(u+" "+imageView.getX()+" "+imageView.getY());}
 
                  }*/
-            //idOfButton2=v.getResources().getResourceName(v.getId());
+                //idOfButton2=v.getResources().getResourceName(v.getId());
 
 
+                //}
+            } else {
 
-            //}
-        }
+                buttonFlag = 0;//пользователь ошибся с ходом пусть выбирает заново
+                textView = findViewById(R.id.textView);
+                textView.setText("пользователь ошибся с ходом пусть выбирает заново");
 
+                list.clear();//очищаем список возможных  ходов
+                for (int i = 0; i <= 63; i++) {
+                    System.out.println("id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF);
+                }
 
-        else{
-            buttonFlag=0;//пользователь ошибся с ходом пусть выбирает заново
-            textView=findViewById(R.id.textView);
-            textView.setText("пользователь ошибся с ходом пусть выбирает заново");
-
-            list.clear();//очищаем список возможных  ходов
-            for(int i=0;i<=63;i++) {
-                System.out.println("id фигуры:" + board[i].getidF() + "цвет:" + board[i].color + " вертикаль:" + board[i].vertical + " горизонталь:" + board[i].horizontal + " есть ли фигура:" + board[i].isFigure + " название фигуры:" + board[i].nameF + " цвет фигуры:" + board[i].colorF);
             }
 
+
+            //idOfButton=v.getTag().toString();
+            //idOfButton="маленькое продвижение";
+            //textView=findViewById(R.id.textView);
+            //textView.setText(board[ fIdOfButton].getNameF());
+
+
+        }
+        else{
+            if( fIdOfButtonForPromotion>-1){
+            idOfButton2 = v.getResources().getResourceName(v.getId());
+            fIdOfButton2 = Integer.parseInt(idOfButton2.substring(32));
+            if(can & board[fIdOfButton2].isFigure==0){ idOfButton2 = v.getResources().getResourceName(v.getId());
+            fIdOfButton2 = Integer.parseInt(idOfButton2.substring(32));//куда перемещаем изображение
+            int index=arrangementKey1;
+            imageView = findViewById(arrangementKey);//получили обьект изображения
+
+            Drawable q = imageView.getDrawable();//получили рисунок
+            int height = findViewById(arrangementKey).getHeight();//нашли высоту изображения
+            int whidth = findViewById(arrangementKey).getWidth();//нашли ширину изображения
+            float y0 = imageView.getY();
+            float x0 = imageView.getX();
+
+
+            imageView = findViewById(forCalcImg.get(0));
+                board[fIdOfButton2].idF=indexImg;
+            calcImg();
+            board[fIdOfButton2].isFigure=1;
+
+            //imageView.onclick
+            imageView.getLayoutParams().width = whidth;//установили ширину
+            imageView.getLayoutParams().height = height;//установили высоту
+            if (index==10||index==11){
+                board[fIdOfButton2].nameF="Король";
+                imageView.setX(x0+(board[fIdOfButton2].getHorizontal()-7)*toPx(49));
+                if (y0<=toPx(608)){imageView.setY(y0 - ((10-board[fIdOfButton2].getVertical()) * toPx(49)));
+                    board[fIdOfButton2].colorF=0;}
+                else {imageView.setY(y0 - ((11-board[fIdOfButton2].getVertical()) * toPx(49)));
+                    board[fIdOfButton2].colorF=1;}
+            }
+
+           else if (index==9||index==8){
+                board[fIdOfButton2].nameF="Пешка";
+                imageView.setX(x0+(board[fIdOfButton2].getHorizontal()-2)*toPx(49));
+                if (y0<=toPx(608)){imageView.setY(y0 - ((10-board[fIdOfButton2].getVertical()) * toPx(49)));
+                    board[fIdOfButton2].colorF=0;}
+                else {imageView.setY(y0 - ((11-board[fIdOfButton2].getVertical()) * toPx(49)));
+                    board[fIdOfButton2].colorF=1;}
+            }
+            else if (y0<=toPx(608)) {
+                board[fIdOfButton2].colorF=0;
+                imageView.setY(y0 - ((10-board[fIdOfButton2].getVertical()) * toPx(49)));
+                if (board[fIdOfButton2].getHorizontal() <= 6) {
+                    imageView.setX(x0 + toPx((board[fIdOfButton2].getHorizontal() - index - 3) * 49));
+                } else if (board[fIdOfButton2].getHorizontal() > 6) {
+                    imageView.setX(x0 + toPx((board[fIdOfButton2].getHorizontal() - index - 3) * 49));
+                }
+            } else {
+                board[fIdOfButton2].colorF=1;
+                imageView.setY(y0 - ((11-board[fIdOfButton2].getVertical()) * toPx(49)));
+                if (board[fIdOfButton2].getHorizontal() <= 6) {
+                    imageView.setX(x0 + toPx((board[fIdOfButton2].getHorizontal() - index + 1) * 49));
+
+                } else if (board[fIdOfButton2].getHorizontal() > 6) {
+                    imageView.setX(x0 + toPx((board[fIdOfButton2].getHorizontal() - index + 1) * 49));
+                }
+            }
+                if (index < 4)
+                    board[fIdOfButton2].nameF = figure[index];
+                else if (index < 8){
+                    board[fIdOfButton2].nameF = figure[index - 4];
+                }
+            imageView.setImageDrawable(q);//поставили рисунок
+            imageView.setVisibility(View.VISIBLE);
+            if( board[fIdOfButton2].nameF=="Король"){
+                if (board[fIdOfButton2].colorF==0){
+                    GeoOfWKing=fIdOfButton2;
+
+                }
+                else{GeoOfBKing=fIdOfButton2;}
+                countKing=countKing+1;}
+
+
+        }
+        else if(forCalcImg.get(1)==0){ textView = findViewById(R.id.textView);
+                textView.setText("Расставлено максимальное количество фигур");}
+            for(int i=0;i!=64;i++){ System.out.println(i+" id фигуры:"+board[i].getidF()+" цвет:"+board[i].color+" вертикаль:"+board[i].vertical+" горизонталь:"+board[i].horizontal+" есть ли фигура:"+board[i].isFigure+" название фигуры:"+board[i].nameF+" цвет фигуры:"+board[i].colorF);
+            }
         }
 
-
-
-
-        //idOfButton=v.getTag().toString();
-        //idOfButton="маленькое продвижение";
-        //textView=findViewById(R.id.textView);
-        //textView.setText(board[ fIdOfButton].getNameF());
-
-
-
-    }
-
-
+    }}
 }

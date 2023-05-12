@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#24C2C8"
-    tools:context=".Play2">
+    tools:context=".Exercise">
 
 
     <ImageButton
@@ -13,31 +13,28 @@
         android:layout_width="49dp"
         android:layout_height="49dp"
         android:layout_marginTop="48dp"
-        android:onClick="graphicPromotion"
-        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/imageButton64"
         app:layout_constraintTop_toBottomOf="@+id/imageButton57"
-        app:srcCompat="@drawable/blackfield" />
+        app:srcCompat="@drawable/blackfield"
+        android:onClick="graphicPromotion"/>
 
     <ImageButton
         android:id="@+id/imageButton73"
         android:layout_width="49dp"
         android:layout_height="49dp"
-        android:onClick="graphicPromotion"
-        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/imageButton68"
         app:layout_constraintTop_toBottomOf="@+id/imageButton72"
-        app:srcCompat="@drawable/whitefield" />
+        app:srcCompat="@drawable/whitefield"
+        android:onClick="graphicPromotion"/>
 
     <ImageButton
         android:id="@+id/imageButton74"
         android:layout_width="49dp"
         android:layout_height="49dp"
-        android:onClick="graphicPromotion"
-        android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@+id/imageButton71"
         app:layout_constraintTop_toBottomOf="@+id/imageButton75"
-        app:srcCompat="@drawable/whitefield" />
+        app:srcCompat="@drawable/whitefield"
+        android:onClick="graphicPromotion"/>
 
     <ImageButton
         android:id="@+id/imageButton71"
@@ -45,7 +42,7 @@
         android:layout_height="49dp"
 
         android:onClick="graphicPromotion"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toEndOf="@+id/imageButton70"
         app:layout_constraintTop_toBottomOf="@+id/imageButton67"
         app:srcCompat="@drawable/whitefield" />
@@ -55,7 +52,7 @@
         android:layout_width="49dp"
         android:layout_height="49dp"
         android:onClick="graphicPromotion"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toEndOf="@+id/imageButton68"
         app:layout_constraintTop_toBottomOf="@+id/imageButton65"
         app:srcCompat="@drawable/whitefield" />
@@ -65,7 +62,7 @@
         android:layout_width="49dp"
         android:layout_height="49dp"
         android:onClick="graphicPromotion"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toEndOf="@+id/imageButton69"
         app:layout_constraintTop_toBottomOf="@+id/imageButton66"
         app:srcCompat="@drawable/whitefield" />
@@ -77,7 +74,7 @@
         android:layout_marginTop="48dp"
         android:onClick="graphicPromotion"
 
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toEndOf="@+id/imageButton65"
         app:layout_constraintTop_toBottomOf="@+id/imageButton60"
         app:srcCompat="@drawable/blackfield" />
@@ -90,7 +87,7 @@
         android:layout_marginTop="48dp"
         android:onClick="graphicPromotion"
 
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toEndOf="@+id/imageButton64"
         app:layout_constraintTop_toBottomOf="@+id/imageButton59"
         app:srcCompat="@drawable/blackfield" />
@@ -103,7 +100,7 @@
         android:layout_marginTop="48dp"
         android:onClick="graphicPromotion"
 
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toEndOf="@+id/imageButton66"
         app:layout_constraintTop_toBottomOf="@+id/imageButton61"
         app:srcCompat="@drawable/blackfield" />
@@ -117,7 +114,7 @@
         android:layout_marginTop="48dp"
         android:onClick="graphicPromotion"
 
-        android:visibility="invisible"
+        android:visibility="visible"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton58"
@@ -231,7 +228,7 @@
         android:layout_height="49dp"
         android:layout_marginStart="102dp"
         android:onClick="graphicPromotion"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton64"
         app:srcCompat="@drawable/whitefield" />
@@ -744,11 +741,10 @@
         android:layout_width="49dp"
         android:layout_height="49dp"
         android:layout_marginTop="48dp"
-        android:onClick="graphicPromotion"
-        android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@+id/imageButton67"
         app:layout_constraintTop_toBottomOf="@+id/imageButton62"
-        app:srcCompat="@drawable/blackfield" />
+        app:srcCompat="@drawable/blackfield"
+        android:onClick="graphicPromotion"/>
 
     <ImageView
         android:id="@+id/imageView3"
@@ -766,7 +762,7 @@
         android:layout_height="46dp"
         android:layout_marginStart="200dp"
         android:layout_marginTop="641dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bq" />
@@ -786,8 +782,7 @@
         android:layout_width="49dp"
         android:layout_height="47dp"
         android:layout_marginStart="298dp"
-        android:layout_marginTop="645dp"
-        android:visibility="invisible"
+        android:layout_marginTop="643dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/black_king" />
@@ -797,8 +792,7 @@
         android:layout_width="49dp"
         android:layout_height="47dp"
         android:layout_marginStart="298dp"
-        android:layout_marginTop="595dp"
-        android:visibility="invisible"
+        android:layout_marginTop="593dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/white_king" />
@@ -819,7 +813,7 @@
         android:layout_height="31dp"
         android:layout_marginStart="250dp"
         android:layout_marginTop="652dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/black_bishop" />
@@ -840,10 +834,11 @@
         android:layout_height="23dp"
         android:layout_marginStart="65dp"
         android:layout_marginTop="657dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/black_pawn" />
+        app:srcCompat="@drawable/black_pawn"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/imageView24"
@@ -851,7 +846,7 @@
         android:layout_height="23dp"
         android:layout_marginStart="65dp"
         android:layout_marginTop="608dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/white_pawn" />
@@ -932,7 +927,7 @@
         android:layout_height="29dp"
         android:layout_marginStart="155dp"
         android:layout_marginTop="654dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/blackknight" />
@@ -1053,7 +1048,7 @@
         android:layout_height="46dp"
         android:layout_marginStart="200dp"
         android:layout_marginTop="592dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/white_queen" />
@@ -1104,7 +1099,7 @@
         android:layout_height="29dp"
         android:layout_marginStart="155dp"
         android:layout_marginTop="605dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/white_knight" />
@@ -1167,7 +1162,7 @@
         android:layout_height="31dp"
         android:layout_marginStart="250dp"
         android:layout_marginTop="603dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/white_bishop" />
@@ -1189,7 +1184,7 @@
         android:layout_height="29dp"
         android:layout_marginStart="102dp"
         android:layout_marginTop="605dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/white__rook" />
@@ -1201,7 +1196,7 @@
         android:layout_marginStart="102dp"
         android:layout_marginTop="654dp"
         android:background="#0033691E"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/blacke_rook_" />
@@ -1229,7 +1224,9 @@
         android:layout_marginBottom="10dp"
 
         android:text="Ход белых"
-        android:visibility="invisible"
+        android:textColorHighlight="#C32A2A"
+        android:textColorLink="#0D47A1"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -1238,8 +1235,9 @@
         android:id="@+id/imageViewo"
         android:layout_width="49dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="12dp"
-        android:visibility="invisible"
+        android:layout_marginTop="36dp"
+        android:clickable="true"
+        android:onClick="startPlay"
         app:layout_constraintBottom_toTopOf="@+id/switch1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
